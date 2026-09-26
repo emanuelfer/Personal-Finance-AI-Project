@@ -1,0 +1,41 @@
+{
+  "type": "record",
+  "name": "FinancialAlertEventAvro",
+  "namespace": "com.personalfinance.contracts.v1",
+  "doc": "Avro schema for budget violations and anomaly alerts",
+  "fields": [
+    {
+      "name": "alertId",
+      "type": "string"
+    },
+    {
+      "name": "tenantId",
+      "type": "string"
+    },
+    {
+      "name": "alertType",
+      "type": "string"
+    },
+    {
+      "name": "severity",
+      "type": "string"
+    },
+    {
+      "name": "title",
+      "type": "string"
+    },
+    {
+      "name": "message",
+      "type": "string"
+    },
+    {
+      "name": "metadataJson",
+      "type": "string",
+      "default": "{}"
+    },
+    {
+      "name": "occurredAt",
+      "type": "long"
+    }
+  ]
+}

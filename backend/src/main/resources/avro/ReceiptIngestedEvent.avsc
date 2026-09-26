@@ -1,0 +1,36 @@
+{
+  "type": "record",
+  "name": "ReceiptIngestedEventAvro",
+  "namespace": "com.personalfinance.contracts.v1",
+  "doc": "Avro schema for raw receipt upload and ingestion notifications",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "string"
+    },
+    {
+      "name": "tenantId",
+      "type": "string"
+    },
+    {
+      "name": "receiptId",
+      "type": "string"
+    },
+    {
+      "name": "fileName",
+      "type": "string"
+    },
+    {
+      "name": "contentType",
+      "type": "string"
+    },
+    {
+      "name": "fileSizeBytes",
+      "type": "long"
+    },
+    {
+      "name": "occurredAt",
+      "type": "long"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+LOCAL_IP=$(ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null || hostname -I 2>/dev/null | awk '{print $1}' || echo "localhost")
+
+echo "========================================================="
+echo "📱 Personal Finance - Local Network Access (Wi-Fi / LAN)"
+echo "========================================================="
+echo ""
+echo "Your Mac's Local IP: $LOCAL_IP"
+echo ""
+echo "🌐 Access from any device on your Wi-Fi (Phone, Tablet, Laptop):"
+echo "   👉 Gateway Unified App: http://${LOCAL_IP}:8000"
+echo "   👉 Gateway Secure:      https://${LOCAL_IP}:8443"
+echo "   👉 Direct Frontend:     http://${LOCAL_IP}:4200"
+echo "   👉 Analytics:           http://${LOCAL_IP}:4200/analytics"
+echo "   👉 Keycloak IdP:        http://${LOCAL_IP}:8088"
+echo "   👉 Kong Manager GUI:    http://${LOCAL_IP}:8002"
+echo "   👉 Backend Swagger UI:  http://${LOCAL_IP}:8080/q/swagger-ui"
+echo ""
+echo "💻 Access locally on this Mac:"
+echo "   👉 Keycloak OIDC Server: http://localhost:8088"
+echo "   👉 Kong Gateway Proxy:   http://localhost:8000"
+echo "   👉 Kong Manager UI:      http://localhost:8002"
+echo "   👉 Frontend Dev Server:  http://localhost:4200"
+echo "========================================================="

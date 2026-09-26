@@ -1,0 +1,98 @@
+{
+  "realm": "personal-finance-realm",
+  "displayName": "Personal Finance & AI Advisory",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": true,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "accessTokenLifespan": 3600,
+  "ssoSessionIdleTimeout": 86400,
+  "ssoSessionMaxLifespan": 604800,
+  "roles": {
+    "realm": [
+      {
+        "name": "admin",
+        "description": "Administrator with full system & tenant privileges"
+      },
+      {
+        "name": "user",
+        "description": "Standard user access to budget, transactions and spreadsheets"
+      },
+      {
+        "name": "financial-planner",
+        "description": "AI Advisory and multi-profile budget planner role"
+      }
+    ]
+  },
+  "defaultRoles": [
+    "user"
+  ],
+  "clients": [
+    {
+      "clientId": "personal-finance-frontend",
+      "name": "Personal Finance Angular SPA",
+      "description": "Single Page Application using Authorization Code Flow with PKCE",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "attributes": {
+        "pkce.code.challenge.method": "S256",
+        "post.logout.redirect.uris": "+##*##http://localhost:4200/*##http://localhost:8000/*"
+      },
+      "redirectUris": [
+        "*",
+        "http://localhost:4200/*",
+        "http://localhost:8000/*"
+      ],
+      "webOrigins": [
+        "*",
+        "+"
+      ],
+      "protocolMappers": [
+        {
+          "name": "tenant_id",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "tenant_id",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "tenant_id",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "name": "user_id",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "userinfo.token.claim": "true",
+            "user.attribute": "user_id",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "user_id",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    },
+    {
+      "clientId": "personal-finance-backend",
+      "name": "Personal Finance Quarkus Backend",
+      "description": "Stateless Resource Server performing JWKS local verification",
+      "enabled": true,
+      "bearerOnly": true,
+      "publicClient": false,
+      "protocol": "openid-connect"
+    }
+  ]
+}

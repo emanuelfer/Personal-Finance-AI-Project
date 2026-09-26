@@ -1,0 +1,59 @@
+{
+  "type": "record",
+  "name": "ReceiptProcessedEventAvro",
+  "namespace": "com.personalfinance.contracts.v1",
+  "doc": "Avro schema for AI-extracted structured receipt information",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "string"
+    },
+    {
+      "name": "tenantId",
+      "type": "string"
+    },
+    {
+      "name": "receiptId",
+      "type": "string"
+    },
+    {
+      "name": "merchant",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "totalAmount",
+      "type": ["null", "double"],
+      "default": null
+    },
+    {
+      "name": "taxAmount",
+      "type": ["null", "double"],
+      "default": null
+    },
+    {
+      "name": "receiptTimestamp",
+      "type": ["null", "long"],
+      "default": null
+    },
+    {
+      "name": "suggestedCategory",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "confidenceScore",
+      "type": "double",
+      "default": 1.0
+    },
+    {
+      "name": "lineItemsJson",
+      "type": "string",
+      "default": "[]"
+    },
+    {
+      "name": "occurredAt",
+      "type": "long"
+    }
+  ]
+}

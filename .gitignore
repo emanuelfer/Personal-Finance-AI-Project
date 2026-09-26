@@ -1,0 +1,69 @@
+# =========================================================================
+# Environment Variables & Secrets
+# =========================================================================
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# =========================================================================
+# Database Data & Backups (Zero Real Data Pushed to Git)
+# =========================================================================
+docker/backup/*.sql
+docker/backup/*.dump
+docker/backup/*.tar
+*.dump
+*.sql.gz
+*.rdb
+*.sqlite
+*.sqlite3
+scratch*
+*.scratch.*
+
+# =========================================================================
+# Operating System Files
+# =========================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# =========================================================================
+# IDEs and Editors
+# =========================================================================
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+.project
+.classpath
+.settings/
+.factorypath
+*.swp
+*.swo
+
+# =========================================================================
+# Build Artifacts & Dependencies
+# =========================================================================
+**/target/
+**/dist/
+**/node_modules/
+**/.angular/
+.mvn/wrapper/maven-wrapper.jar
+
+# =========================================================================
+# Logs, Temp, and TLS
+# =========================================================================
+*.log
+logs/
+tmp/
+temp/
+.certs/
+.quarkus/

@@ -1,0 +1,310 @@
+services:
+  # ==========================================
+  # PostgreSQL with pgvector (Event Store & Semantic Embeddings)
+  # ==========================================
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: pf-postgres
+    restart: unless-stopped
+    ports:
+      - "${HOST_BIND_IP:-127.0.0.1}:5432:5432"
+    environment:
+      POSTGRES_DB: personal_finance
+      POSTGRES_USER: pf_user
+      POSTGRES_PASSWORD: pf_password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pf_user -d personal_finance"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ==========================================
+  # Redis (Low-Latency Materialized Views & Projections)
+  # ==========================================
+  redis:
+    image: redis:7.2-alpine
+    container_name: pf-redis
+    restart: unless-stopped
+    ports:
+      - "${HOST_BIND_IP:-127.0.0.1}:6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ==========================================
+  # Redpanda (Lightweight Kafka-Compatible Message Broker)
+  # ==========================================
+  redpanda:
+    image: docker.redpanda.com/redpandadata/redpanda:v24.1.8
+    container_name: pf-redpanda
+    restart: unless-stopped
+    command:
+      - redpanda
+      - start
+      - --kafka-addr=PLAINTEXT://0.0.0.0:29092,OUTSIDE://0.0.0.0:9092
+      - --advertise-kafka-addr=PLAINTEXT://redpanda:29092,OUTSIDE://localhost:9092
+      - --pandaproxy-addr=0.0.0.0:8082
+      - --advertise-pandaproxy-addr=localhost:8082
+      - --schema-registry-addr=0.0.0.0:8081
+      - --rpc-addr=0.0.0.0:33145
+      - --advertise-rpc-addr=redpanda:33145
+      - --mode=dev-container
+      - --smp=1
+      - --memory=1G
+    ports:
+      - "${HOST_BIND_IP:-127.0.0.1}:9092:9092"
+      - "${HOST_BIND_IP:-127.0.0.1}:8081:8081"
+      - "${HOST_BIND_IP:-127.0.0.1}:8082:8082"
+    volumes:
+      - redpandadata:/var/lib/redpanda/data
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -i healthy || exit 0"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ==========================================
+  # Redpanda Console (Kafka & Event Visualizer)
+  # ==========================================
+  redpanda-console:
+    image: docker.redpanda.com/redpandadata/console:v2.5.2
+    container_name: pf-redpanda-console
+    restart: unless-stopped
+    ports:
+      - "${HOST_BIND_IP:-127.0.0.1}:8085:8080"
+    environment:
+      KAFKA_BROKERS: redpanda:29092
+      KAFKA_SCHEMAREGISTRY_ENABLED: "true"
+      KAFKA_SCHEMAREGISTRY_URLS: http://apicurio:8080/apis/ccompat/v7
+    depends_on:
+      - redpanda
+      - apicurio
+
+  # ==========================================
+  # Apicurio Schema Registry (Strict Avro Contracts)
+  # ==========================================
+  apicurio:
+    image: apicurio/apicurio-registry-mem:2.5.11.Final
+    container_name: pf-apicurio
+    restart: unless-stopped
+    ports:
+      - "${HOST_BIND_IP:-127.0.0.1}:8086:8080"
+    environment:
+      QUARKUS_HTTP_PORT: 8080
+      REGISTRY_APIS_V2_DATE_FORMAT: "yyyy-MM-dd'T'HH:mm:ss'Z'"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health/ready || exit 0"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ==========================================
+  # OpenTelemetry Collector & Jaeger (Distributed Tracing)
+  # ==========================================
+  jaeger:
+    image: jaegertracing/all-in-one:1.54
+    container_name: pf-jaeger
+    restart: unless-stopped
+    ports:
+      - "${HOST_BIND_IP:-127.0.0.1}:16686:16686" # Jaeger UI
+      - "${HOST_BIND_IP:-127.0.0.1}:4317:4317"   # OTLP gRPC receiver
+      - "${HOST_BIND_IP:-127.0.0.1}:4318:4318"   # OTLP HTTP receiver
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+
+  # ==========================================
+  # pgAdmin 4 (PostgreSQL Database Management UI)
+  # ==========================================
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pf-pgadmin
+    restart: unless-stopped
+    ports:
+      - "${HOST_BIND_IP:-127.0.0.1}:5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    volumes:
+      - pgadmindata:/var/lib/pgadmin
+      - ./docker/pgadmin-servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ==========================================
+  # Keycloak 25 (Identity Provider, OAuth 2.0 & OIDC PKCE)
+  # ==========================================
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0
+    container_name: pf-keycloak
+    restart: unless-stopped
+    command: start-dev --import-realm
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_PORT: 8080
+      KC_HEALTH_ENABLED: "true"
+    ports:
+      - "${HOST_BIND_IP:-127.0.0.1}:8088:8080"
+    volumes:
+      - keycloakdata:/opt/keycloak/data
+      - ./docker/keycloak/realm-export.json:/opt/keycloak/data/import/realm.json:ro
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8080 || exit 0"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ==========================================
+  # Java Quarkus Backend Node 1 (CQRS, Event Sourcing & AI)
+  # ==========================================
+  backend-1:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pf-backend-1
+    restart: unless-stopped
+    ports:
+      - "${HOST_BIND_IP:-127.0.0.1}:8080:8080"
+    environment:
+      QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://postgres:5432/personal_finance
+      QUARKUS_DATASOURCE_USERNAME: pf_user
+      QUARKUS_DATASOURCE_PASSWORD: pf_password
+      QUARKUS_REDIS_HOSTS: redis://redis:6379
+      KAFKA_BOOTSTRAP_SERVERS: redpanda:29092
+      MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_APICURIO_REGISTRY_URL: http://apicurio:8080/apis/ccompat/v7
+      QUARKUS_OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      QUARKUS_OIDC_AUTH_SERVER_URL: http://keycloak:8080/realms/personal-finance-realm
+      QUARKUS_OIDC_TOKEN_ISSUER: any
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL_CHAT: gemini-3.5-flash-lite
+      GEMINI_MODEL_VISION: gemini-3.5-flash-lite
+      QUARKUS_LOG_LEVEL: INFO
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      redpanda:
+        condition: service_healthy
+      apicurio:
+        condition: service_started
+      jaeger:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:8080/api/advisor/status || exit 0"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ==========================================
+  # Java Quarkus Backend Node 2 (Load-Balanced Replica)
+  # ==========================================
+  backend-2:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pf-backend-2
+    restart: unless-stopped
+    ports:
+      - "${HOST_BIND_IP:-127.0.0.1}:8083:8080"
+    environment:
+      QUARKUS_DATASOURCE_JDBC_URL: jdbc:postgresql://postgres:5432/personal_finance
+      QUARKUS_DATASOURCE_USERNAME: pf_user
+      QUARKUS_DATASOURCE_PASSWORD: pf_password
+      QUARKUS_REDIS_HOSTS: redis://redis:6379
+      KAFKA_BOOTSTRAP_SERVERS: redpanda:29092
+      MP_MESSAGING_CONNECTOR_SMALLRYE_KAFKA_APICURIO_REGISTRY_URL: http://apicurio:8080/apis/ccompat/v7
+      QUARKUS_OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      QUARKUS_OIDC_AUTH_SERVER_URL: http://keycloak:8080/realms/personal-finance-realm
+      QUARKUS_OIDC_TOKEN_ISSUER: any
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      GEMINI_MODEL_CHAT: gemini-3.5-flash-lite
+      GEMINI_MODEL_VISION: gemini-3.5-flash-lite
+      QUARKUS_LOG_LEVEL: INFO
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      redpanda:
+        condition: service_healthy
+      apicurio:
+        condition: service_started
+      jaeger:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:8080/api/advisor/status || exit 0"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ==========================================
+  # Angular Frontend (Single Page Application via Nginx)
+  # ==========================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pf-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend-1
+      - backend-2
+
+  # ==========================================
+  # Kong API Gateway (Load Balancer, Rate Limiter, CORS, OTel)
+  # ==========================================
+  kong:
+    image: kong:3.9
+    container_name: pf-kong
+    restart: unless-stopped
+    environment:
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /etc/kong/kong.yml
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_ADMIN_LISTEN: 0.0.0.0:8001
+      KONG_ADMIN_GUI_LISTEN: 0.0.0.0:8002
+      KONG_PROXY_LISTEN: 0.0.0.0:8000, 0.0.0.0:8443 ssl
+      KONG_PLUGINS: bundled,opentelemetry
+    ports:
+      - "${HOST_BIND_IP:-127.0.0.1}:8000:8000" # HTTP Proxy (Main entrypoint)
+      - "${HOST_BIND_IP:-127.0.0.1}:8443:8443" # HTTPS Proxy (TLS termination)
+      - "${HOST_BIND_IP:-127.0.0.1}:8001:8001" # Admin API
+      - "${HOST_BIND_IP:-127.0.0.1}:8002:8002" # Kong Manager OSS Web UI
+    volumes:
+      - ./docker/kong/kong.yml:/etc/kong/kong.yml:ro
+    depends_on:
+      redis:
+        condition: service_healthy
+      jaeger:
+        condition: service_started
+      backend-1:
+        condition: service_started
+      backend-2:
+        condition: service_started
+      frontend:
+        condition: service_started
+    healthcheck:
+      test: ["CMD-SHELL", "kong health || exit 0"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  pgdata:
+  redisdata:
+  redpandadata:
+  pgadmindata:
+  keycloakdata:

@@ -1,0 +1,168 @@
+_format_version: "3.0"
+
+upstreams:
+  # =========================================================================
+  # Load Balancer Upstream: Distributes between backend-1 and backend-2
+  # =========================================================================
+  - name: backend-upstream
+    algorithm: round-robin
+    targets:
+      - target: backend-1:8080
+        weight: 100
+      - target: backend-2:8080
+        weight: 100
+    healthchecks:
+      active:
+        type: http
+        http_path: /q/health/live
+        timeout: 5
+        concurrency: 10
+        healthy:
+          interval: 5
+          successes: 2
+          http_statuses:
+            - 200
+            - 302
+        unhealthy:
+          interval: 5
+          http_failures: 2
+          tcp_failures: 2
+          timeouts: 2
+          http_statuses:
+            - 429
+            - 500
+            - 503
+
+services:
+  # =========================================================================
+  # Quarkus Backend Upstream (CQRS, Event Sourcing & AI Advisory)
+  # =========================================================================
+  - name: backend-service
+    host: backend-upstream
+    port: 8080
+    protocol: http
+    connect_timeout: 60000
+    write_timeout: 60000
+    read_timeout: 60000
+    routes:
+      - name: backend-api-route
+        paths:
+          - /api
+        strip_path: false
+        preserve_host: false
+        protocols:
+          - http
+          - https
+        plugins:
+          # 1. Zero-Trust Header Context Injection
+          - name: request-transformer
+            config:
+              add:
+                headers:
+                  - "X-Forwarded-By:Kong-API-Gateway"
+
+          # 2. Distributed Rate Limiting (Redis-backed: 120 req/min)
+          - name: rate-limiting
+            config:
+              minute: 120
+              policy: redis
+              redis:
+                host: redis
+                port: 6379
+                timeout: 2000
+              fault_tolerant: true
+              hide_client_headers: false
+
+          # 3. Telemetry Context Injection (Unique Trace ID)
+          - name: correlation-id
+            config:
+              header_name: X-Correlation-ID
+              generator: uuid#counter
+              echo_downstream: true
+
+          # 4. CORS Termination
+          - name: cors
+            config:
+              origins:
+                - "*"
+              methods:
+                - GET
+                - POST
+                - PUT
+                - DELETE
+                - PATCH
+                - OPTIONS
+                - HEAD
+              headers:
+                - Accept
+                - Accept-Version
+                - Content-Length
+                - Content-MD5
+                - Content-Type
+                - Date
+                - Authorization
+                - X-Tenant-Id
+                - X-Requested-With
+                - apikey
+                - X-Correlation-ID
+              exposed_headers:
+                - X-Correlation-ID
+                - RateLimit-Limit
+                - RateLimit-Remaining
+                - RateLimit-Reset
+                - X-Kong-Proxy-Latency
+                - X-Kong-Upstream-Latency
+              credentials: true
+              max_age: 3600
+
+          # 5. OpenTelemetry Distributed Tracing (Jaeger)
+          - name: opentelemetry
+            config:
+              endpoint: http://jaeger:4318/v1/traces
+              resource_attributes:
+                service.name: kong-api-gateway
+                deployment.environment: local-dev
+              traces_endpoint: http://jaeger:4318/v1/traces
+
+      - name: backend-swagger-route
+        paths:
+          - /q/swagger-ui
+          - /q/openapi
+          - /q/health
+        strip_path: false
+        preserve_host: false
+        protocols:
+          - http
+          - https
+
+  # =========================================================================
+  # Angular Frontend Upstream (Nginx Container)
+  # =========================================================================
+  - name: frontend-service
+    url: http://frontend:80
+    connect_timeout: 60000
+    write_timeout: 60000
+    read_timeout: 60000
+    routes:
+      - name: frontend-web-route
+        paths:
+          - /
+        strip_path: false
+        preserve_host: false
+        protocols:
+          - http
+          - https
+
+# =========================================================================
+# Consumers & Credentials (Auth Offloading & Identity)
+# =========================================================================
+consumers:
+  - username: web-app-consumer
+    custom_id: client-web-01
+    keyauth_credentials:
+      - key: pf-web-client-token-2026
+
+  - username: mobile-app-consumer
+    custom_id: client-mobile-01
+    keyauth_credentials:
+      - key: pf-mobile-client-token-2026

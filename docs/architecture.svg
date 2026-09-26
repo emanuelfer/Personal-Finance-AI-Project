@@ -1,0 +1,200 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 820" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090d16"/>
+      <stop offset="100%" stop-color="#030712"/>
+    </linearGradient>
+    <linearGradient id="cardGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+    </linearGradient>
+    <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#14b8a6"/>
+    </linearGradient>
+    <linearGradient id="indigoGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6366f1"/>
+      <stop offset="100%" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="purpleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="amberGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#ef4444"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#10b981"/>
+    </marker>
+    <marker id="arrowIndigo" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#818cf8"/>
+    </marker>
+    <marker id="arrowAmber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#f59e0b"/>
+    </marker>
+    <marker id="arrowCyan" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#38bdf8"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1000" height="820" rx="16" fill="url(#bgGrad)" stroke="#1e293b" stroke-width="2"/>
+
+  <!-- Title Banner -->
+  <g transform="translate(40, 30)">
+    <text x="0" y="24" fill="#f8fafc" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="800" letter-spacing="-0.5">Personal Finance &amp; AI Advisory Platform</text>
+    <text x="0" y="44" fill="#94a3b8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12">End-to-End Distributed Architecture: OIDC PKCE • Kong Gateway • CQRS &amp; Event Sourcing • Virtual Threads • pgvector</text>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- TIER 1: CLIENT & IDENTITY LAYER -->
+  <!-- ========================================================================= -->
+  <g transform="translate(40, 95)">
+    <!-- Container Box -->
+    <rect width="920" height="95" rx="12" fill="url(#cardGrad)" stroke="#334155" stroke-width="1.5"/>
+    <rect x="16" y="-10" width="180" height="20" rx="6" fill="#0f172a" stroke="#6366f1" stroke-width="1"/>
+    <text x="24" y="4" fill="#818cf8" font-family="sans-serif" font-size="10" font-weight="700" text-transform="uppercase">📱 1. Client &amp; Identity Tier</text>
+
+    <!-- Angular Card -->
+    <rect x="25" y="22" width="370" height="58" rx="8" fill="#090d16" stroke="#3b82f6" stroke-width="1.5"/>
+    <text x="40" y="45" fill="#f8fafc" font-family="sans-serif" font-size="13" font-weight="700">⚡ Angular 19 SPA (Port 4200 / 8000)</text>
+    <text x="40" y="63" fill="#94a3b8" font-family="sans-serif" font-size="11">Apple-Inspired UI • Chart.js • PKCE Auth Client • Signals</text>
+
+    <!-- Keycloak Card -->
+    <rect x="525" y="22" width="370" height="58" rx="8" fill="#090d16" stroke="#8b5cf6" stroke-width="1.5"/>
+    <text x="540" y="45" fill="#f8fafc" font-family="sans-serif" font-size="13" font-weight="700">🔑 Keycloak 25 IdP (Port 8088 / Admin)</text>
+    <text x="540" y="63" fill="#94a3b8" font-family="sans-serif" font-size="11">OAuth 2.0 / OIDC • S256 PKCE • PBKDF2 Database Hashing</text>
+
+    <!-- Bidirectional Connection -->
+    <path d="M 395 51 L 525 51" stroke="#818cf8" stroke-width="2" stroke-dasharray="4,4" marker-end="url(#arrowIndigo)"/>
+    <text x="412" y="44" fill="#a5b4fc" font-family="sans-serif" font-size="9" font-weight="600">PKCE S256 Flow</text>
+  </g>
+
+  <!-- Arrow Tier 1 -> Tier 2 -->
+  <path d="M 225 190 L 225 220" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="235" y="197" width="220" height="18" rx="4" fill="#064e3b" stroke="#10b981" stroke-width="0.8"/>
+  <text x="242" y="210" fill="#6ee7b7" font-family="sans-serif" font-size="9" font-weight="700">HTTP/REST + Bearer &lt;JWT&gt;</text>
+
+  <!-- ========================================================================= -->
+  <!-- TIER 2: PERIMETER API GATEWAY LAYER -->
+  <!-- ========================================================================= -->
+  <g transform="translate(40, 225)">
+    <rect width="920" height="90" rx="12" fill="url(#cardGrad)" stroke="#10b981" stroke-width="1.5"/>
+    <rect x="16" y="-10" width="210" height="20" rx="6" fill="#0f172a" stroke="#10b981" stroke-width="1"/>
+    <text x="24" y="4" fill="#34d399" font-family="sans-serif" font-size="10" font-weight="700" text-transform="uppercase">🦍 2. Perimeter Gateway (Kong 3.9)</text>
+
+    <!-- Kong Gateway Box -->
+    <rect x="25" y="20" width="550" height="56" rx="8" fill="#090d16" stroke="#059669" stroke-width="1.5"/>
+    <text x="40" y="42" fill="#f8fafc" font-family="sans-serif" font-size="13" font-weight="700">🦍 Kong API Gateway (Port 8000 / 8443 TLS / GUI :8002)</text>
+    <text x="40" y="60" fill="#94a3b8" font-family="sans-serif" font-size="11">Zero-Trust Routing • Correlation ID • Centralized CORS • OTel Tracing</text>
+
+    <!-- Redis Rate Limiter Box -->
+    <rect x="655" y="20" width="240" height="56" rx="8" fill="#090d16" stroke="#ef4444" stroke-width="1.5"/>
+    <text x="670" y="42" fill="#f8fafc" font-family="sans-serif" font-size="12" font-weight="700">⚡ Redis Rate Limiter (:6379)</text>
+    <text x="670" y="60" fill="#fca5a5" font-family="sans-serif" font-size="11">120 req/min Distributed Policy</text>
+
+    <!-- Kong -> Redis connection -->
+    <path d="M 575 48 L 655 48" stroke="#ef4444" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#arrowAmber)"/>
+  </g>
+
+  <!-- Arrow Tier 2 -> Tier 3 -->
+  <path d="M 300 315 L 300 345" stroke="#10b981" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <rect x="310" y="322" width="210" height="18" rx="4" fill="#064e3b" stroke="#10b981" stroke-width="0.8"/>
+  <text x="318" y="335" fill="#6ee7b7" font-family="sans-serif" font-size="9" font-weight="700">Forward Upstream (host:8080)</text>
+
+  <!-- ========================================================================= -->
+  <!-- TIER 3: CORE BACKEND LAYER (QUARKUS 3.18) -->
+  <!-- ========================================================================= -->
+  <g transform="translate(40, 350)">
+    <rect width="920" height="160" rx="12" fill="url(#cardGrad)" stroke="#38bdf8" stroke-width="1.5"/>
+    <rect x="16" y="-10" width="280" height="20" rx="6" fill="#0f172a" stroke="#38bdf8" stroke-width="1"/>
+    <text x="24" y="4" fill="#38bdf8" font-family="sans-serif" font-size="10" font-weight="700" text-transform="uppercase">☕ 3. Core Backend (Quarkus 3.18 + Java 21)</text>
+
+    <!-- Sub-boxes in Backend -->
+    <!-- 1. Stateless Security -->
+    <rect x="25" y="20" width="270" height="125" rx="8" fill="#090d16" stroke="#3b82f6" stroke-width="1"/>
+    <text x="38" y="42" fill="#60a5fa" font-family="sans-serif" font-size="12" font-weight="700">🔒 Stateless JWT Security</text>
+    <text x="38" y="64" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Local JWKS Cache (&lt;0.2ms)</text>
+    <text x="38" y="82" fill="#cbd5e1" font-family="sans-serif" font-size="11">• 0 Network Calls to IdP</text>
+    <text x="38" y="100" fill="#cbd5e1" font-family="sans-serif" font-size="11">• RBAC &amp; Tenant Extraction</text>
+    <text x="38" y="118" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Principal: 'sub' (User ID)</text>
+
+    <!-- 2. CQRS Engine -->
+    <rect x="310" y="20" width="295" height="125" rx="8" fill="#090d16" stroke="#10b981" stroke-width="1"/>
+    <text x="323" y="42" fill="#34d399" font-family="sans-serif" font-size="12" font-weight="700">⚡ CQRS &amp; Event Sourcing</text>
+    <text x="323" y="64" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Java 21 Virtual Threads (Loom)</text>
+    <text x="323" y="82" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Aggregates: Account, Budget, Receipt</text>
+    <text x="323" y="100" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Append-Only Event Store Logic</text>
+    <text x="323" y="118" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Dynamic Spreadsheet Projections</text>
+
+    <!-- 3. AI & Vector Engine -->
+    <rect x="620" y="20" width="275" height="125" rx="8" fill="#090d16" stroke="#c084fc" stroke-width="1"/>
+    <text x="633" y="42" fill="#d8b4fe" font-family="sans-serif" font-size="12" font-weight="700">🤖 AI Advisor &amp; Multi-Modal RAG</text>
+    <text x="633" y="64" fill="#cbd5e1" font-family="sans-serif" font-size="11">• LangChain4j + Gemini 1.5 Flash</text>
+    <text x="633" y="82" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Receipt Image / PDF OCR Ingestion</text>
+    <text x="633" y="100" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Bounded Tenant Context Retrieval</text>
+    <text x="633" y="118" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Hallucination-Free Financial Tools</text>
+  </g>
+
+  <!-- ========================================================================= -->
+  <!-- TIER 4 & 5: DATA, STREAMING & OBSERVABILITY -->
+  <!-- ========================================================================= -->
+
+  <!-- Redpanda Stream Box -->
+  <g transform="translate(40, 540)">
+    <rect width="280" height="150" rx="12" fill="url(#cardGrad)" stroke="#f43f5e" stroke-width="1.5"/>
+    <rect x="16" y="-10" width="210" height="20" rx="6" fill="#0f172a" stroke="#f43f5e" stroke-width="1"/>
+    <text x="24" y="4" fill="#fb7185" font-family="sans-serif" font-size="10" font-weight="700" text-transform="uppercase">🐼 4. Event Streaming</text>
+    
+    <text x="20" y="32" fill="#f8fafc" font-family="sans-serif" font-size="12" font-weight="700">Redpanda / Kafka (:9092 / :8085)</text>
+    <text x="20" y="52" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Partition Affinity via 'sub'</text>
+    <text x="20" y="70" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Strict In-Order FIFO Delivery</text>
+    <text x="20" y="88" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Topic: financial.events.transactions</text>
+    <text x="20" y="106" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Topic: financial.events.receipts</text>
+    <text x="20" y="124" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Apicurio Schema Registry (:8086)</text>
+  </g>
+
+  <!-- PostgreSQL & Cache Box -->
+  <g transform="translate(340, 540)">
+    <rect width="320" height="150" rx="12" fill="url(#cardGrad)" stroke="#3b82f6" stroke-width="1.5"/>
+    <rect x="16" y="-10" width="240" height="20" rx="6" fill="#0f172a" stroke="#3b82f6" stroke-width="1"/>
+    <text x="24" y="4" fill="#60a5fa" font-family="sans-serif" font-size="10" font-weight="700" text-transform="uppercase">🐘 5. Persistence &amp; Cache</text>
+    
+    <text x="20" y="32" fill="#f8fafc" font-family="sans-serif" font-size="12" font-weight="700">PostgreSQL 16 + pgvector (:5432)</text>
+    <text x="20" y="52" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Append-Only 'event_store' Table</text>
+    <text x="20" y="70" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Materialized spreadsheet_state</text>
+    <text x="20" y="88" fill="#cbd5e1" font-family="sans-serif" font-size="11">• pgvector HNSW Vector Embeddings</text>
+    <text x="20" y="108" fill="#f59e0b" font-family="sans-serif" font-size="12" font-weight="700">⚡ Redis Projections Cache (:6379)</text>
+    <text x="20" y="128" fill="#cbd5e1" font-family="sans-serif" font-size="11">• &lt;0.3ms Atomic Hashes (HINCRBYFLOAT)</text>
+  </g>
+
+  <!-- Observability Box -->
+  <g transform="translate(680, 540)">
+    <rect width="280" height="150" rx="12" fill="url(#cardGrad)" stroke="#a855f7" stroke-width="1.5"/>
+    <rect x="16" y="-10" width="210" height="20" rx="6" fill="#0f172a" stroke="#a855f7" stroke-width="1"/>
+    <text x="24" y="4" fill="#c084fc" font-family="sans-serif" font-size="10" font-weight="700" text-transform="uppercase">🔭 6. Distributed Observability</text>
+    
+    <text x="20" y="32" fill="#f8fafc" font-family="sans-serif" font-size="12" font-weight="700">Jaeger UI (:16686 / OTLP :4318)</text>
+    <text x="20" y="52" fill="#cbd5e1" font-family="sans-serif" font-size="11">• End-to-End Flame-Graphs</text>
+    <text x="20" y="70" fill="#cbd5e1" font-family="sans-serif" font-size="11">• W3C traceparent Propagation</text>
+    <text x="20" y="88" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Gateway -> Backend -> DB Spans</text>
+    <text x="20" y="108" fill="#f8fafc" font-family="sans-serif" font-size="12" font-weight="700">🐘 pgAdmin 4 UI (:5050)</text>
+    <text x="20" y="128" fill="#cbd5e1" font-family="sans-serif" font-size="11">• Relational DB Console</text>
+  </g>
+
+  <!-- Inter-tier Connecting Arrows -->
+  <path d="M 450 510 L 180 540" stroke="#f43f5e" stroke-width="2" marker-end="url(#arrowAmber)"/>
+  <path d="M 500 510 L 500 540" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 750 510 L 820 540" stroke="#a855f7" stroke-width="2" stroke-dasharray="3,3" marker-end="url(#arrowIndigo)"/>
+
+  <!-- Footer -->
+  <g transform="translate(40, 780)">
+    <text x="0" y="0" fill="#64748b" font-family="sans-serif" font-size="11">Personal Finance Platform • Production Architecture Blueprint • Generated 2026</text>
+    <text x="920" y="0" text-anchor="end" fill="#10b981" font-family="sans-serif" font-size="11" font-weight="700">● 15 Microservices &amp; Ports Healthy</text>
+  </g>
+</svg>

@@ -1,0 +1,13 @@
+{
+  "Servers": {
+    "1": {
+      "Name": "Personal Finance DB (pgvector)",
+      "Group": "Servers",
+      "Host": "postgres",
+      "Port": 5432,
+      "MaintenanceDB": "personal_finance",
+      "Username": "pf_user",
+      "SSLMode": "prefer"
+    }
+  }
+}

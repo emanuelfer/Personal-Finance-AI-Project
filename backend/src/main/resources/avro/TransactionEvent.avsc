@@ -1,0 +1,67 @@
+{
+  "type": "record",
+  "name": "TransactionEventAvro",
+  "namespace": "com.personalfinance.contracts.v1",
+  "doc": "Avro schema for transaction lifecycle events emitted to Redpanda",
+  "fields": [
+    {
+      "name": "eventId",
+      "type": "string"
+    },
+    {
+      "name": "tenantId",
+      "type": "string"
+    },
+    {
+      "name": "aggregateId",
+      "type": "string"
+    },
+    {
+      "name": "accountId",
+      "type": "string"
+    },
+    {
+      "name": "eventType",
+      "type": "string"
+    },
+    {
+      "name": "version",
+      "type": "long"
+    },
+    {
+      "name": "amount",
+      "type": "double"
+    },
+    {
+      "name": "type",
+      "type": "string"
+    },
+    {
+      "name": "category",
+      "type": "string"
+    },
+    {
+      "name": "merchant",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "description",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "receiptId",
+      "type": ["null", "string"],
+      "default": null
+    },
+    {
+      "name": "transactionTimestamp",
+      "type": "long"
+    },
+    {
+      "name": "occurredAt",
+      "type": "long"
+    }
+  ]
+}
