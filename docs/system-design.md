@@ -55,28 +55,28 @@ graph TD
     end
 
     %% Interactions
-    User -->|1. HTTP Requests (Port 8000)| Kong
-    User -->|2. OIDC Login / PKCE (Port 8088)| Keycloak
-    Kong -->|Static Web Traffic: / | Frontend
-    Kong -->|API Traffic: /api/* | Upstream
-    Upstream -->|Weight 100| Backend1
-    Upstream -->|Weight 100| Backend2
+    User -->|"1. HTTP Requests (Port 8000)"| Kong
+    User -->|"2. OIDC Login / PKCE (Port 8088)"| Keycloak
+    Kong -->|"Static Web Traffic: /"| Frontend
+    Kong -->|"API Traffic: /api/*"| Upstream
+    Upstream -->|"Weight 100"| Backend1
+    Upstream -->|"Weight 100"| Backend2
 
-    Backend1 & Backend2 -->|Stateless JWT Validation| Keycloak
-    Backend1 & Backend2 -->|Append Events (Write Model)| Postgres
-    Backend1 & Backend2 -->|Publish Events| Redpanda
-    Redpanda -->|Validate Avro Schema| Apicurio
-    Redpanda -->|Consume Events (Read Model)| Backend1 & Backend2
-    Backend1 & Backend2 -->|Update Projections| Redis
-    Backend1 & Backend2 -->|Update Projections| Postgres
-    Backend1 & Backend2 -->|Semantic History Search| Postgres
-    Backend1 & Backend2 -->|Ground Truth RAG Prompt| Gemini
+    Backend1 & Backend2 -->|"Stateless JWT Validation"| Keycloak
+    Backend1 & Backend2 -->|"Append Events (Write Model)"| Postgres
+    Backend1 & Backend2 -->|"Publish Events"| Redpanda
+    Redpanda -->|"Validate Avro Schema"| Apicurio
+    Redpanda -->|"Consume Events (Read Model)"| Backend1 & Backend2
+    Backend1 & Backend2 -->|"Update Projections"| Redis
+    Backend1 & Backend2 -->|"Update Projections"| Postgres
+    Backend1 & Backend2 -->|"Semantic History Search"| Postgres
+    Backend1 & Backend2 -->|"Ground Truth RAG Prompt"| Gemini
     
-    Kong -.->|Sync Rate Limits| Redis
-    Kong -.->|Trace Export (HTTP)| Jaeger
-    Backend1 & Backend2 -.->|Trace Export (gRPC)| Jaeger
-    Redpanda -.->|Telemetry| RedpandaConsole
-    Postgres -.->|DB Management| PgAdmin
+    Kong -.->|"Sync Rate Limits"| Redis
+    Kong -.->|"Trace Export (HTTP)"| Jaeger
+    Backend1 & Backend2 -.->|"Trace Export (gRPC)"| Jaeger
+    Redpanda -.->|"Telemetry"| RedpandaConsole
+    Postgres -.->|"DB Management"| PgAdmin
 ```
 
 ---

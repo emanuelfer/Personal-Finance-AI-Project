@@ -17,16 +17,16 @@ flowchart TD
     subgraph Tier1 ["Client and Identity Layer"]
         SPA["Angular 19 SPA (Port 4200 / 8000)"]
         Keycloak["Keycloak 25 IdP (Port 8088)"]
-        SPA -->|1. Auth Code and PKCE| Keycloak
+        SPA -->|"1. Auth Code and PKCE"| Keycloak
     end
 
     subgraph Tier2 ["Perimeter API Gateway Layer"]
         Kong["Kong API Gateway 3.9 (Port 8000 / 8443)"]
         RedisGW[("Redis Rate Limiter (Port 6379)")]
-        Kong -->|Sync Limits 120 req per min| RedisGW
+        Kong -->|"Sync Limits 120 req per min"| RedisGW
     end
 
-    SPA -->|2. Authenticated API Call with Bearer JWT| Kong
+    SPA -->|"2. Authenticated API Call with Bearer JWT"| Kong
 
     subgraph Tier3 ["Core Backend Layer - Quarkus 3.18"]
         JWT["Stateless Local JWKS Verification Engine"]
@@ -34,7 +34,7 @@ flowchart TD
         Query["Query Side (Read Model): Projections"]
         AI["AI Advisor (LangChain4j + Gemini 1.5)"]
         
-        Kong -->|3. Forward Request| JWT
+        Kong -->|"3. Forward Request"| JWT
         JWT --> Command
         JWT --> Query
         JWT --> AI
@@ -44,9 +44,9 @@ flowchart TD
         Redpanda["Redpanda / Kafka (Port 9092)"]
         Apicurio["Apicurio Schema Registry (Port 8086)"]
         
-        Command -->|4. Publish Events (Partition Key: sub)| Redpanda
-        Redpanda -->|Schema Validation| Apicurio
-        Redpanda -->|5. Reactive Stream| Query
+        Command -->|"4. Publish Events (Partition Key: sub)"| Redpanda
+        Redpanda -->|"Schema Validation"| Apicurio
+        Redpanda -->|"5. Reactive Stream"| Query
     end
 
     subgraph Tier5 ["Persistence and Caching Layer"]
@@ -62,8 +62,8 @@ flowchart TD
 
     subgraph Tier6 ["Distributed Observability"]
         Jaeger["Jaeger Tracing UI (Port 16686)"]
-        Kong -.->|OTel Spans| Jaeger
-        JWT -.->|OTel Spans| Jaeger
+        Kong -.->|"OTel Spans"| Jaeger
+        JWT -.->|"OTel Spans"| Jaeger
     end
 ```
 
