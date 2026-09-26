@@ -17,24 +17,26 @@ Chart.register(...registerables);
     <div class="space-y-6">
 
       <!-- Header Ribbon with Year & Profile Switcher -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 glass-panel p-4 sm:p-5 rounded-2xl border border-slate-800">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#0c1322] p-4 sm:p-5 rounded-xl border border-slate-800">
         
         <!-- Title & Subtitle -->
         <div>
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 to-cyan-500 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-emerald-500/20">
-              📈
+            <div class="w-10 h-10 rounded-xl bg-slate-900 border border-slate-700/80 flex items-center justify-center text-emerald-400 font-bold">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3v18h18M18 9l-5 5-4-4-3 3" />
+              </svg>
             </div>
             <div>
-              <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight flex items-center gap-2">
-                <span>Evolução & Gráficos Financeiros</span>
-                <span class="text-xs px-2.5 py-0.5 rounded-full font-mono font-semibold"
-                      [ngClass]="activeProfile === 'CONSOLIDADO' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'">
+              <h1 class="text-xl sm:text-2xl font-bold text-slate-100 tracking-tight flex items-center gap-2">
+                <span>Evolução &amp; Gráficos Financeiros</span>
+                <span class="text-xs px-2.5 py-0.5 rounded font-mono font-medium"
+                      [ngClass]="activeProfile === 'CONSOLIDADO' ? 'bg-slate-800 text-emerald-400 border border-emerald-500/20' : 'bg-slate-800 text-slate-300 border border-slate-700'">
                   {{ getActiveProfileLabel() }}
                 </span>
               </h1>
-              <p class="text-xs text-slate-400">
-                Análise gráfica completa de Capital de Giro, Rendimentos, Gastos, Resultado e Reserva de Emergência
+              <p class="text-xs text-slate-400 mt-0.5">
+                Análise gráfica de Capital de Giro, Rendimentos, Gastos, Resultado e Reserva de Emergência
               </p>
             </div>
           </div>
@@ -44,41 +46,51 @@ Chart.register(...registerables);
         <div class="flex items-center gap-2.5 flex-wrap">
           
           <!-- Year Selector -->
-          <div class="flex items-center bg-slate-900 border border-slate-800 rounded-xl p-1 font-mono text-xs shadow-inner">
-            <button (click)="changeYear(selectedYear - 1)" title="Ano Anterior" class="px-2 py-1 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition">
-              ◀
+          <div class="flex items-center bg-slate-900 border border-slate-800 rounded-lg p-0.5 font-mono tabular-nums text-xs">
+            <button (click)="changeYear(selectedYear - 1)" title="Ano Anterior" class="px-2 py-1 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition cursor-pointer">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
             </button>
-            <span class="px-2.5 py-1 font-bold text-emerald-400 text-sm">
+            <span class="px-2.5 py-1 font-semibold text-emerald-400 text-xs">
               {{ selectedYear }}
             </span>
-            <button (click)="changeYear(selectedYear + 1)" title="Próximo Ano" class="px-2 py-1 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition">
-              ▶
+            <button (click)="changeYear(selectedYear + 1)" title="Próximo Ano" class="px-2 py-1 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition cursor-pointer">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
             </button>
           </div>
 
           <!-- Profile Switcher Tabs (Dynamic Members) -->
-          <div class="flex bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs font-semibold gap-1">
+          <div class="flex bg-slate-900 p-0.5 rounded-lg border border-slate-800 text-xs font-medium gap-0.5">
             @for (mem of members; track mem.id) {
               <button (click)="setProfile(mem.id)"
-                      class="px-3 py-1.5 rounded-lg transition flex items-center gap-1 cursor-pointer"
-                      [ngClass]="activeProfile === mem.id ? getProfileButtonActiveClass(mem) : 'text-slate-400 hover:text-slate-200'">
-                <span>{{ mem.icon }}</span>
+                      class="px-2.5 py-1.5 rounded-md transition flex items-center gap-1.5 cursor-pointer text-xs"
+                      [ngClass]="activeProfile === mem.id ? 'bg-slate-800 text-white font-medium border border-slate-700/80' : 'text-slate-400 hover:text-slate-200'">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
                 <span>{{ mem.name }}</span>
               </button>
             }
             <button (click)="setProfile('CONSOLIDADO')"
-                    class="px-3 py-1.5 rounded-lg transition flex items-center gap-1 cursor-pointer"
-                    [ngClass]="activeProfile === 'CONSOLIDADO' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-500/20 font-bold' : 'text-slate-400 hover:text-slate-200'">
-              <span>👥</span>
+                    class="px-2.5 py-1.5 rounded-md transition flex items-center gap-1.5 cursor-pointer text-xs"
+                    [ngClass]="activeProfile === 'CONSOLIDADO' ? 'bg-slate-800 text-white font-medium border border-slate-700/80' : 'text-slate-400 hover:text-slate-200'">
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
               <span>Consolidado</span>
             </button>
           </div>
 
           <!-- Quick link to spreadsheet -->
           <a routerLink="/spreadsheet"
-             class="px-3 py-2 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-emerald-400 border border-slate-800 rounded-xl text-xs font-bold transition flex items-center gap-1.5">
-            <span>📊 Planilha Mensal</span>
-            <span>→</span>
+             class="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 rounded-lg text-xs font-medium transition flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h18v18H3V3zm0 6h18M3 15h18M9 3v18M15 3v18" />
+            </svg>
+            <span>Planilha</span>
           </a>
 
         </div>
@@ -89,71 +101,71 @@ Chart.register(...registerables);
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
         
         <!-- Capital de Giro Médio -->
-        <div class="glass-panel p-4 rounded-2xl relative overflow-hidden border border-slate-800 group hover:border-amber-500/40 transition">
-          <div class="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center justify-between">
+        <div class="bg-[#0c1322] p-4 rounded-xl border border-slate-800 space-y-1.5">
+          <div class="text-[11px] font-medium text-amber-400 uppercase tracking-wider flex items-center justify-between">
             <span>Capital de Giro Médio</span>
-            <span class="text-xs">🟡</span>
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
           </div>
-          <div class="text-2xl font-extrabold text-amber-300 mt-1.5 font-mono">
+          <div class="text-xl sm:text-2xl font-bold text-amber-300 font-mono tabular-nums">
             R$ {{ averageMonthlyGiro | number:'1.2-2' }}
           </div>
-          <div class="text-[11px] text-slate-400 mt-1">
+          <div class="text-[11px] text-slate-400">
             Média mensal residual disponível
           </div>
         </div>
 
         <!-- Rendimentos Anuais -->
-        <div class="glass-panel p-4 rounded-2xl relative overflow-hidden border border-slate-800 group hover:border-emerald-500/40 transition">
-          <div class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider flex items-center justify-between">
+        <div class="bg-[#0c1322] p-4 rounded-xl border border-slate-800 space-y-1.5">
+          <div class="text-[11px] font-medium text-emerald-400 uppercase tracking-wider flex items-center justify-between">
             <span>Rendimentos Anuais</span>
-            <span class="text-xs">🟢</span>
+            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
           </div>
-          <div class="text-2xl font-extrabold text-emerald-400 mt-1.5 font-mono">
+          <div class="text-xl sm:text-2xl font-bold text-emerald-400 font-mono tabular-nums">
             R$ {{ totalAnnualIncome | number:'1.2-2' }}
           </div>
-          <div class="text-[11px] text-slate-400 mt-1">
+          <div class="text-[11px] text-slate-400">
             Total acumulado em 12 meses
           </div>
         </div>
 
         <!-- Total de Gastos Anuais -->
-        <div class="glass-panel p-4 rounded-2xl relative overflow-hidden border border-slate-800 group hover:border-rose-500/40 transition">
-          <div class="text-[11px] font-bold text-rose-400 uppercase tracking-wider flex items-center justify-between">
+        <div class="bg-[#0c1322] p-4 rounded-xl border border-slate-800 space-y-1.5">
+          <div class="text-[11px] font-medium text-rose-400 uppercase tracking-wider flex items-center justify-between">
             <span>Gastos Anuais</span>
-            <span class="text-xs">🔴</span>
+            <span class="w-2 h-2 rounded-full bg-rose-400"></span>
           </div>
-          <div class="text-2xl font-extrabold text-rose-400 mt-1.5 font-mono">
+          <div class="text-xl sm:text-2xl font-bold text-rose-400 font-mono tabular-nums">
             R$ {{ totalAnnualExpenses | number:'1.2-2' }}
           </div>
-          <div class="text-[11px] text-slate-400 mt-1">
+          <div class="text-[11px] text-slate-400">
             Total despesas registradas no ano
           </div>
         </div>
 
         <!-- Resultado Anual Líquido -->
-        <div class="glass-panel p-4 rounded-2xl relative overflow-hidden border border-slate-800 group hover:border-cyan-500/40 transition">
-          <div class="text-[11px] font-bold text-cyan-400 uppercase tracking-wider flex items-center justify-between">
+        <div class="bg-[#0c1322] p-4 rounded-xl border border-slate-800 space-y-1.5">
+          <div class="text-[11px] font-medium text-cyan-400 uppercase tracking-wider flex items-center justify-between">
             <span>Resultado do Ano</span>
-            <span class="text-xs">🔵</span>
+            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
           </div>
-          <div class="text-2xl font-extrabold mt-1.5 font-mono" [ngClass]="annualNetResult >= 0 ? 'text-cyan-300' : 'text-rose-400'">
+          <div class="text-xl sm:text-2xl font-bold font-mono tabular-nums" [ngClass]="annualNetResult >= 0 ? 'text-cyan-300' : 'text-rose-400'">
             {{ annualNetResult >= 0 ? '+' : '' }}R$ {{ annualNetResult | number:'1.2-2' }}
           </div>
-          <div class="text-[11px] text-slate-400 mt-1">
+          <div class="text-[11px] text-slate-400">
             Superávit líquido acumulado
           </div>
         </div>
 
         <!-- Caixa Final em Dezembro (Reserva) -->
-        <div class="glass-panel p-4 rounded-2xl relative overflow-hidden border border-slate-800 group hover:border-purple-500/40 transition">
-          <div class="text-[11px] font-bold text-purple-400 uppercase tracking-wider flex items-center justify-between">
+        <div class="bg-[#0c1322] p-4 rounded-xl border border-slate-800 space-y-1.5">
+          <div class="text-[11px] font-medium text-purple-400 uppercase tracking-wider flex items-center justify-between">
             <span>Caixa Final (Dez)</span>
-            <span class="text-xs">🟣</span>
+            <span class="w-2 h-2 rounded-full bg-purple-400"></span>
           </div>
-          <div class="text-2xl font-extrabold text-purple-300 mt-1.5 font-mono">
+          <div class="text-xl sm:text-2xl font-bold text-purple-300 font-mono tabular-nums">
             R$ {{ yearEndReserve | number:'1.2-2' }}
           </div>
-          <div class="text-[11px] text-slate-400 mt-1">
+          <div class="text-[11px] text-slate-400">
             Reserva de Emergência projetada
           </div>
         </div>
@@ -161,70 +173,70 @@ Chart.register(...registerables);
       </div>
 
       <!-- Chart View Controls & Interactive Graph Panel -->
-      <div class="glass-panel p-5 sm:p-6 rounded-2xl border border-slate-800 space-y-4">
+      <div class="bg-[#0c1322] p-4 sm:p-5 rounded-xl border border-slate-800 space-y-4">
         
         <!-- Header with Chart Presets & Legends -->
-        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-800 pb-3">
           <div>
-            <h2 class="text-base font-bold text-white flex items-center gap-2">
-              <span>Evolução Mensal • {{ selectedYear }}</span>
-              <span class="text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono">12 Meses (Jan - Dez)</span>
+            <h2 class="text-sm font-bold text-slate-100 flex items-center gap-2">
+              <span>Evolução Mensal &bull; {{ selectedYear }}</span>
+              <span class="text-[10px] px-2 py-0.5 rounded bg-slate-900 text-slate-400 font-mono">12 Meses (Jan - Dez)</span>
             </h2>
-            <p class="text-xs text-slate-400">
-              Visualize o fluxo financeiro mês a mês e a propagação dinâmica da reserva de emergência
+            <p class="text-xs text-slate-400 mt-0.5">
+              Fluxo financeiro mês a mês e propagação dinâmica da reserva de emergência
             </p>
           </div>
 
           <!-- Chart Preset Filter Tabs -->
-          <div class="flex items-center gap-1.5 bg-slate-900 p-1 rounded-xl border border-slate-800 text-xs font-semibold flex-wrap">
+          <div class="flex items-center gap-1 bg-slate-900 p-0.5 rounded-lg border border-slate-800 text-xs font-medium flex-wrap">
             <button (click)="setChartMode('ALL')"
-                    class="px-3 py-1.5 rounded-lg transition"
-                    [ngClass]="activeChartMode === 'ALL' ? 'bg-emerald-600 text-white shadow font-bold' : 'text-slate-400 hover:text-slate-200'">
-              📊 Todos os 5 Indicadores
+                    class="px-2.5 py-1 rounded-md transition text-xs cursor-pointer"
+                    [ngClass]="activeChartMode === 'ALL' ? 'bg-slate-800 text-white font-medium border border-slate-700/80' : 'text-slate-400 hover:text-slate-200'">
+              Todos os Indicadores
             </button>
             <button (click)="setChartMode('FLOW')"
-                    class="px-3 py-1.5 rounded-lg transition"
-                    [ngClass]="activeChartMode === 'FLOW' ? 'bg-emerald-600 text-white shadow font-bold' : 'text-slate-400 hover:text-slate-200'">
-              💸 Rendimentos x Gastos x Resultado
+                    class="px-2.5 py-1 rounded-md transition text-xs cursor-pointer"
+                    [ngClass]="activeChartMode === 'FLOW' ? 'bg-slate-800 text-white font-medium border border-slate-700/80' : 'text-slate-400 hover:text-slate-200'">
+              Fluxo Líquido
             </button>
             <button (click)="setChartMode('RESERVES')"
-                    class="px-3 py-1.5 rounded-lg transition"
-                    [ngClass]="activeChartMode === 'RESERVES' ? 'bg-emerald-600 text-white shadow font-bold' : 'text-slate-400 hover:text-slate-200'">
-              🛡️ Capital de Giro & Reserva
+                    class="px-2.5 py-1 rounded-md transition text-xs cursor-pointer"
+                    [ngClass]="activeChartMode === 'RESERVES' ? 'bg-slate-800 text-white font-medium border border-slate-700/80' : 'text-slate-400 hover:text-slate-200'">
+              Giro &amp; Reservas
             </button>
             <button (click)="setChartMode('BARS')"
-                    class="px-3 py-1.5 rounded-lg transition"
-                    [ngClass]="activeChartMode === 'BARS' ? 'bg-emerald-600 text-white shadow font-bold' : 'text-slate-400 hover:text-slate-200'">
-              📈 Barras Comparativas
+                    class="px-2.5 py-1 rounded-md transition text-xs cursor-pointer"
+                    [ngClass]="activeChartMode === 'BARS' ? 'bg-slate-800 text-white font-medium border border-slate-700/80' : 'text-slate-400 hover:text-slate-200'">
+              Comparativo em Barras
             </button>
           </div>
         </div>
 
         <!-- Chart Container -->
-        <div class="relative w-full h-[400px] sm:h-[460px] pt-2">
+        <div class="relative w-full h-[380px] sm:h-[440px] pt-1">
           <canvas #analyticsCanvas></canvas>
         </div>
 
         <!-- Custom Legend Indicators -->
-        <div class="flex items-center justify-center gap-4 sm:gap-6 flex-wrap pt-3 border-t border-slate-800/80 text-xs font-mono">
+        <div class="flex items-center justify-center gap-4 sm:gap-6 flex-wrap pt-3 border-t border-slate-800 text-xs font-mono">
           <div class="flex items-center gap-1.5 text-amber-400">
-            <span class="w-3 h-3 rounded-full bg-amber-400 inline-block shadow-sm"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span>
             <span>Capital de Giro</span>
           </div>
           <div class="flex items-center gap-1.5 text-emerald-400">
-            <span class="w-3 h-3 rounded-full bg-emerald-400 inline-block shadow-sm"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>
             <span>Rendimentos</span>
           </div>
           <div class="flex items-center gap-1.5 text-rose-400">
-            <span class="w-3 h-3 rounded-full bg-rose-400 inline-block shadow-sm"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block"></span>
             <span>Total de Gastos</span>
           </div>
           <div class="flex items-center gap-1.5 text-cyan-400">
-            <span class="w-3 h-3 rounded-full bg-cyan-400 inline-block shadow-sm"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 inline-block"></span>
             <span>Resultado do Mês</span>
           </div>
           <div class="flex items-center gap-1.5 text-purple-400">
-            <span class="w-3 h-3 rounded-full bg-purple-400 inline-block shadow-sm"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-purple-400 inline-block"></span>
             <span>Caixa Final (Reserva)</span>
           </div>
         </div>
@@ -232,20 +244,20 @@ Chart.register(...registerables);
       </div>
 
       <!-- Detailed 12-Month Numerical Breakdown Table -->
-      <div class="glass-panel p-5 sm:p-6 rounded-2xl border border-slate-800 space-y-4">
+      <div class="bg-[#0c1322] p-4 sm:p-5 rounded-xl border border-slate-800 space-y-4">
         <div class="flex items-center justify-between border-b border-slate-800 pb-3">
           <div>
-            <h3 class="text-base font-bold text-white">Tabela de Valores Mensais • {{ selectedYear }}</h3>
-            <p class="text-xs text-slate-400">Detalhamento numérico mês a mês sincronizado com a base de dados</p>
+            <h3 class="text-sm font-bold text-slate-100">Tabela de Valores Mensais &bull; {{ selectedYear }}</h3>
+            <p class="text-xs text-slate-400 mt-0.5">Detalhamento numérico mensal sincronizado com o banco de dados</p>
           </div>
-          <span class="text-xs font-mono text-emerald-400 font-bold bg-emerald-950/40 border border-emerald-500/30 px-2.5 py-1 rounded-lg">
+          <span class="text-xs font-mono text-emerald-400 font-medium bg-slate-900 border border-slate-800 px-2.5 py-1 rounded-md">
             {{ activeProfile }}
           </span>
         </div>
 
-        <div class="overflow-x-auto border border-slate-800/80 rounded-xl">
+        <div class="overflow-x-auto border border-slate-800 rounded-lg">
           <table class="w-full text-left text-xs border-collapse font-sans">
-            <thead class="bg-slate-900/95 text-slate-300 font-mono text-[11px] border-b border-slate-800">
+            <thead class="bg-slate-900 text-slate-300 font-mono text-[11px] border-b border-slate-800">
               <tr>
                 <th class="p-3 border-r border-slate-800 min-w-[120px]">Mês</th>
                 <th class="p-3 border-r border-slate-800 text-right text-emerald-400">Rendimentos</th>
@@ -255,32 +267,32 @@ Chart.register(...registerables);
                 <th class="p-3 text-right text-purple-400">Caixa Final (Reserva)</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800/60 font-mono">
+            <tbody class="divide-y divide-slate-800/80 font-mono tabular-nums">
               @for (m of currentYearMonths; track m.id; let idx = $index) {
-                <tr class="hover:bg-slate-900/40 transition">
-                  <td class="p-3 border-r border-slate-800 font-bold text-slate-200">
+                <tr class="hover:bg-slate-900/50 transition">
+                  <td class="p-3 border-r border-slate-800 font-medium text-slate-200">
                     {{ m.monthName }} / {{ selectedYear }}
                   </td>
-                  <td class="p-3 border-r border-slate-800 text-right text-emerald-400 font-semibold">
+                  <td class="p-3 border-r border-slate-800 text-right text-emerald-400">
                     R$ {{ getProfileIncome(m) | number:'1.2-2' }}
                   </td>
-                  <td class="p-3 border-r border-slate-800 text-right text-rose-400 font-semibold">
+                  <td class="p-3 border-r border-slate-800 text-right text-rose-400">
                     R$ {{ getProfileTotalExpenses(m) | number:'1.2-2' }}
                   </td>
-                  <td class="p-3 border-r border-slate-800 text-right font-bold"
+                  <td class="p-3 border-r border-slate-800 text-right font-medium"
                       [ngClass]="getProfileResultado(m) >= 0 ? 'text-cyan-300' : 'text-rose-400'">
                     {{ getProfileResultado(m) >= 0 ? '+' : '' }}R$ {{ getProfileResultado(m) | number:'1.2-2' }}
                   </td>
-                  <td class="p-3 border-r border-slate-800 text-right text-amber-300 font-bold">
+                  <td class="p-3 border-r border-slate-800 text-right text-amber-300 font-medium">
                     R$ {{ getProfileFinalCapitalGiro(m) | number:'1.2-2' }}
                   </td>
-                  <td class="p-3 text-right text-purple-300 font-black">
+                  <td class="p-3 text-right text-purple-300 font-bold">
                     R$ {{ getProfileFinalCash(selectedYear, idx) | number:'1.2-2' }}
                   </td>
                 </tr>
               }
             </tbody>
-            <tfoot class="bg-slate-900/80 font-mono text-xs font-bold border-t-2 border-slate-700">
+            <tfoot class="bg-slate-900 font-mono tabular-nums text-xs font-semibold border-t-2 border-slate-800">
               <tr>
                 <td class="p-3 border-r border-slate-800 text-slate-200">TOTAL / FINAL</td>
                 <td class="p-3 border-r border-slate-800 text-right text-emerald-400">
@@ -295,7 +307,7 @@ Chart.register(...registerables);
                 <td class="p-3 border-r border-slate-800 text-right text-amber-400">
                   Média: R$ {{ averageMonthlyGiro | number:'1.2-2' }}
                 </td>
-                <td class="p-3 text-right text-purple-400 font-black">
+                <td class="p-3 text-right text-purple-400 font-bold">
                   R$ {{ yearEndReserve | number:'1.2-2' }}
                 </td>
               </tr>
@@ -358,21 +370,21 @@ export class AnalyticsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getActiveProfileLabel(): string {
-    if (this.activeProfile === 'CONSOLIDADO') return '👥 Visão Consolidada (Família)';
+    if (this.activeProfile === 'CONSOLIDADO') return 'Visão Consolidada (Família)';
     const mem = this.members.find(m => m.id === this.activeProfile || m.name.toUpperCase() === this.activeProfile.toUpperCase());
-    return mem ? `${mem.icon} ${mem.name}` : this.activeProfile;
+    return mem ? mem.name : this.activeProfile;
   }
 
   getProfileButtonActiveClass(mem: HouseholdMember): string {
     switch (mem.color) {
-      case 'indigo': return 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20 font-bold';
-      case 'purple': return 'bg-purple-600 text-white shadow-md shadow-purple-500/20 font-bold';
-      case 'emerald': return 'bg-emerald-600 text-white shadow-md shadow-emerald-500/20 font-bold';
-      case 'amber': return 'bg-amber-600 text-white shadow-md shadow-amber-500/20 font-bold';
-      case 'rose': return 'bg-rose-600 text-white shadow-md shadow-rose-500/20 font-bold';
-      case 'sky': return 'bg-sky-600 text-white shadow-md shadow-sky-500/20 font-bold';
-      case 'cyan': return 'bg-cyan-600 text-white shadow-md shadow-cyan-500/20 font-bold';
-      default: return 'bg-indigo-600 text-white shadow-md shadow-indigo-500/20 font-bold';
+      case 'indigo': return 'bg-indigo-600 text-white font-semibold';
+      case 'purple': return 'bg-purple-600 text-white font-semibold';
+      case 'emerald': return 'bg-fintech-600 text-white font-semibold';
+      case 'amber': return 'bg-amber-600 text-white font-semibold';
+      case 'rose': return 'bg-rose-600 text-white font-semibold';
+      case 'sky': return 'bg-sky-600 text-white font-semibold';
+      case 'cyan': return 'bg-cyan-600 text-white font-semibold';
+      default: return 'bg-slate-700 text-white font-semibold';
     }
   }
 

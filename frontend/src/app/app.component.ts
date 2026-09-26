@@ -9,15 +9,15 @@ import { AuthService } from './core/services/auth.service';
   standalone: true,
   imports: [CommonModule, RouterOutlet, NavbarComponent],
   template: `
-    <div class="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
+    <div class="min-h-screen bg-[#060913] text-slate-100 flex flex-col font-sans antialiased selection:bg-emerald-900 selection:text-emerald-100">
       <app-navbar></app-navbar>
       
-      <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-5 pb-24 md:pb-8">
         <router-outlet></router-outlet>
       </main>
 
-      <footer class="border-t border-slate-900 py-4 text-center text-xs text-slate-600 font-mono">
-        Personal Finance & AI Advisory Platform • CQRS & Event Sourcing • Virtual Threads • Redpanda • pgvector • LangChain4j Gemini • OpenTelemetry • Keycloak OIDC PKCE
+      <footer class="hidden md:block border-t border-slate-900/80 py-4 text-center text-[11px] text-slate-500 font-mono tracking-tight">
+        Personal Finance Platform &bull; CQRS &amp; Event Sourcing &bull; PostgreSQL &bull; Keycloak OIDC PKCE
       </footer>
     </div>
   `

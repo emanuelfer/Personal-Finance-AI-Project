@@ -27,96 +27,114 @@ const MONTH_NAMES = [
   template: `
     <div class="space-y-6">
       
-      <!-- Apple-Inspired Minimalist Top Header & Action Bar -->
+      <!-- Minimalist Institutional Top Header & Action Bar -->
       <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 border-b border-slate-800/80 pb-3.5">
         
         <!-- Left: Crisp Title & Minimalist Year Capsule -->
         <div class="flex items-center space-x-3">
-          <h1 class="text-xl font-bold text-white tracking-tight">Planilha Financeira</h1>
+          <h1 class="text-xl font-bold text-slate-100 tracking-tight">Planilha Financeira</h1>
           
-          <!-- Year Selector Capsule (Apple Style) -->
-          <div class="inline-flex items-center bg-slate-900/90 border border-slate-800 rounded-xl p-0.5 font-mono text-xs shadow-inner">
-            <button (click)="changeYear(selectedYear - 1)" title="Ano Anterior" class="px-2 py-1 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition cursor-pointer">
-              ◀
+          <!-- Year Selector Capsule -->
+          <div class="inline-flex items-center bg-slate-900 border border-slate-800 rounded-lg p-0.5 font-mono tabular-nums text-xs">
+            <button (click)="changeYear(selectedYear - 1)" title="Ano Anterior" class="px-2 py-1 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition cursor-pointer">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+              </svg>
             </button>
-            <span class="px-2.5 py-1 font-bold text-emerald-400 text-xs">
+            <span class="px-2.5 py-1 font-semibold text-emerald-400 text-xs">
               {{ selectedYear }}
             </span>
-            <button (click)="changeYear(selectedYear + 1)" title="Próximo Ano" class="px-2 py-1 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition cursor-pointer">
-              ▶
+            <button (click)="changeYear(selectedYear + 1)" title="Próximo Ano" class="px-2 py-1 text-slate-400 hover:text-white rounded hover:bg-slate-800 transition cursor-pointer">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+              </svg>
             </button>
           </div>
         </div>
 
-        <!-- Center / Right: Apple Segmented Profile Switcher + Action Controls -->
-        <div class="flex items-center gap-2 flex-wrap">
+        <!-- Center / Right: Segmented Profile Switcher + Action Controls -->
+        <div class="flex items-center gap-1.5 flex-wrap">
           
-          <!-- Apple-Style Segmented Profile Control (Dynamic Members) -->
-          <div class="inline-flex p-1 bg-slate-900/90 border border-slate-800/90 rounded-xl shadow-inner text-xs font-medium space-x-0.5 items-center">
+          <!-- Segmented Profile Control -->
+          <div class="inline-flex p-0.5 bg-slate-900 border border-slate-800 rounded-lg text-xs font-medium space-x-0.5 items-center">
             @for (mem of members; track mem.id) {
               <button (click)="setProfile(mem.id)"
-                      class="px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5"
-                      [ngClass]="activeProfile === mem.id ? getProfileButtonActiveClass(mem) : 'text-slate-400 hover:text-slate-200'">
-                <span>{{ mem.icon }}</span>
+                      class="px-2.5 py-1.5 rounded-md transition cursor-pointer flex items-center gap-1.5 text-xs"
+                      [ngClass]="activeProfile === mem.id ? 'bg-slate-800 text-white font-medium border border-slate-700/80' : 'text-slate-400 hover:text-slate-200'">
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
                 <span>{{ mem.name }}</span>
               </button>
             }
 
             <button (click)="setProfile('CONSOLIDADO')"
-                    class="px-3 py-1.5 rounded-lg transition cursor-pointer flex items-center gap-1.5"
-                    [ngClass]="activeProfile === 'CONSOLIDADO' ? 'bg-emerald-600 text-white font-semibold shadow-sm' : 'text-slate-400 hover:text-slate-200'">
-              <span>👥</span>
+                    class="px-2.5 py-1.5 rounded-md transition cursor-pointer flex items-center gap-1.5 text-xs"
+                    [ngClass]="activeProfile === 'CONSOLIDADO' ? 'bg-slate-800 text-white font-medium border border-slate-700/80' : 'text-slate-400 hover:text-slate-200'">
+              <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
               <span>Consolidado</span>
             </button>
 
             <!-- Quick Add Member button directly on profile tabs -->
             <button (click)="openMemberManagerModal()"
                     title="Adicionar ou Gerenciar Membros da Família"
-                    class="px-2.5 py-1.5 rounded-lg text-indigo-400 hover:text-indigo-200 hover:bg-slate-800 transition cursor-pointer flex items-center gap-1 font-bold">
-              <span>+</span>
-              <span class="text-xs font-medium">Membro</span>
+                    class="px-2 py-1.5 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition cursor-pointer flex items-center gap-1 text-xs">
+              <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              <span>Membro</span>
             </button>
           </div>
 
-          <!-- Base Capital de Giro Popover Trigger (Apple Pill) -->
+          <!-- Base Capital de Giro Popover Trigger -->
           <div class="relative">
             <button (click)="toggleGiroPopover()"
                     title="Configurar Capital de Giro Base Inicial"
-                    class="px-3 py-1.5 bg-slate-900/90 hover:bg-slate-800/90 border border-slate-800/90 hover:border-slate-700 rounded-xl text-xs font-medium text-amber-300 transition flex items-center gap-1.5 cursor-pointer shadow-sm">
-              <span>🏦</span>
-              <span>Giro: <strong>R$ {{ getActiveBaseGiroTotal() | number:'1.0-0' }}</strong></span>
-              <svg class="w-3 h-3 text-slate-500 transition-transform" [class.rotate-180]="showGiroPopover" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 rounded-lg text-xs font-medium text-amber-300 transition flex items-center gap-1.5 cursor-pointer">
+              <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+              <span class="tabular-nums">Giro: <strong class="font-mono">R$ {{ getActiveBaseGiroTotal() | number:'1.0-0' }}</strong></span>
+              <svg class="w-3 h-3 text-slate-500 transition-transform" [class.rotate-180]="showGiroPopover" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
               </svg>
             </button>
 
             <!-- Floating Popover for Giro Values -->
             @if (showGiroPopover) {
-              <div class="absolute right-0 mt-2 w-72 bg-slate-900/95 border border-slate-800 rounded-2xl shadow-2xl backdrop-blur-xl p-3.5 space-y-3 z-40 animate-in fade-in zoom-in-95 duration-150">
+              <div class="absolute right-0 mt-2 w-72 bg-[#0c1322] border border-slate-800 rounded-xl shadow-xl p-3.5 space-y-3 z-40">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-                  <div class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                    <span>🏦</span>
+                  <div class="text-xs font-semibold text-slate-200 flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5 text-amber-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
                     <span>Capital de Giro Inicial Base</span>
                   </div>
-                  <button (click)="showGiroPopover = false" class="text-slate-400 hover:text-white text-xs cursor-pointer">✕</button>
+                  <button (click)="showGiroPopover = false" class="text-slate-400 hover:text-white text-xs cursor-pointer">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
                 </div>
 
                 <div class="space-y-2 text-xs">
                   @for (mem of members; track mem.id) {
-                    <div class="flex items-center justify-between gap-2 bg-slate-950/80 p-2 rounded-xl border border-slate-800">
-                      <span class="font-medium" [ngClass]="getMemberTextColor(mem)">{{ mem.icon }} {{ mem.name }}:</span>
+                    <div class="flex items-center justify-between gap-2 bg-[#060913] p-2 rounded-lg border border-slate-800">
+                      <span class="font-medium text-slate-300">{{ mem.name }}:</span>
                       <div class="flex items-center gap-1">
                         <span class="text-slate-500 font-mono text-[10px]">R$</span>
                         <input type="number" step="0.01" [(ngModel)]="mem.baseInitialCapitalGiro" (ngModelChange)="onMemberGiroChange(mem, $event)"
-                               class="w-24 bg-transparent text-amber-300 font-mono font-bold text-right focus:outline-none" />
+                               class="w-24 bg-transparent text-amber-300 font-mono tabular-nums font-semibold text-right focus:outline-none" />
                       </div>
                     </div>
                   }
                 </div>
 
-                <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-[11px] font-mono text-slate-400">
+                <div class="flex items-center justify-between pt-2 border-t border-slate-800 text-[11px] font-mono tabular-nums text-slate-400">
                   <span>Total Base:</span>
-                  <span class="text-amber-300 font-bold">R$ {{ getTotalBaseCapitalGiro() | number:'1.2-2' }}</span>
+                  <span class="text-amber-300 font-semibold">R$ {{ getTotalBaseCapitalGiro() | number:'1.2-2' }}</span>
                 </div>
               </div>
             }
@@ -124,48 +142,58 @@ const MONTH_NAMES = [
 
           <!-- Manage Members Button -->
           <button (click)="openMemberManagerModal()"
-                  title="Gerenciar Membros da Família (Adicionar/Editar/Remover)"
-                  class="px-3 py-1.5 bg-slate-900/90 hover:bg-slate-800/90 border border-slate-800/90 hover:border-indigo-500/40 text-indigo-300 hover:text-indigo-200 text-xs font-medium rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-sm">
-            <span>⚙️</span>
+                  title="Gerenciar Membros da Família"
+                  class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium rounded-lg transition flex items-center gap-1.5 cursor-pointer">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
             <span>Membros</span>
-            <span class="px-1.5 py-0.2 rounded-full bg-indigo-500/20 text-[10px] font-mono">{{ members.length }}</span>
+            <span class="px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 text-[10px] font-mono tabular-nums">{{ members.length }}</span>
           </button>
 
           <!-- Expense Catalog Pill Button -->
           <button (click)="toggleCatalogDrawer()"
                   title="Abrir Catálogo de Despesas Recorrentes"
-                  class="px-3 py-1.5 bg-slate-900/90 hover:bg-slate-800/90 border border-slate-800/90 hover:border-purple-500/40 text-purple-300 hover:text-purple-200 text-xs font-medium rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-sm">
-            <span>📑</span>
+                  class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white text-xs font-medium rounded-lg transition flex items-center gap-1.5 cursor-pointer">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+            </svg>
             <span>Catálogo</span>
-            <span class="px-1.5 py-0.2 rounded-full bg-purple-500/20 text-[10px] font-mono">{{ catalogExpenses.length }}</span>
+            <span class="px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 text-[10px] font-mono tabular-nums">{{ catalogExpenses.length }}</span>
           </button>
 
           <!-- Reload / Sync from DB Button -->
           <button (click)="forceReloadFromDatabase()" [disabled]="saveStatus === 'saving'"
-                  title="Recarregar dados mais recentes do Banco de Dados"
-                  class="px-3 py-1.5 bg-slate-900/90 hover:bg-slate-800/90 text-cyan-300 hover:text-cyan-200 border border-slate-800/90 hover:border-cyan-500/40 text-xs font-medium rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-sm disabled:opacity-50">
-            <span>🔄</span>
+                  title="Recarregar dados do Banco de Dados"
+                  class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 text-xs font-medium rounded-lg transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50">
+            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
             <span>Sincronizar</span>
           </button>
 
           <!-- Save Button -->
           <button (click)="manualSave()" [disabled]="saveStatus === 'saving'"
-                  title="Salvar no PostgreSQL"
-                  class="px-3 py-1.5 bg-slate-900/90 hover:bg-slate-800/90 text-slate-300 hover:text-white border border-slate-800/90 hover:border-slate-700 text-xs font-medium rounded-xl transition flex items-center gap-1.5 cursor-pointer shadow-sm disabled:opacity-50">
+                  title="Salvar alterações no banco de dados"
+                  class="px-2.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-200 hover:text-white border border-slate-800 text-xs font-medium rounded-lg transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50">
             @if (saveStatus === 'saving') {
               <span class="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
             } @else {
-              <span>💾</span>
+              <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+              </svg>
             }
             <span>Salvar</span>
           </button>
 
-          <!-- AI Assistant Trigger Button -->
+          <!-- Financial Intelligence / Advisor Trigger Button -->
           <button (click)="toggleAiDrawer()"
-                  title="Abrir Assistente Financeiro IA"
-                  class="px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white text-xs font-semibold rounded-xl transition flex items-center gap-1.5 shadow-md shadow-emerald-500/15 cursor-pointer">
-            <span>🤖</span>
-            <span>Assistente IA</span>
+                  title="Abrir Assistente Financeiro"
+                  class="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-medium rounded-lg transition flex items-center gap-1.5 border border-emerald-600/30 cursor-pointer">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <span>Consultor</span>
           </button>
 
         </div>
@@ -176,39 +204,46 @@ const MONTH_NAMES = [
       <!-- HOUSEHOLD MEMBERS MANAGER MODAL (GERENCIAR MEMBROS DA FAMÍLIA) -->
       <!-- ========================================================================= -->
       @if (showMemberModal) {
-        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto animate-in fade-in duration-150"
+        <div class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto animate-in fade-in duration-150"
              (click)="closeMemberManagerModal()">
-          <div class="glass-panel w-full max-w-2xl rounded-2xl p-5 border-2 border-indigo-500/40 space-y-5 bg-slate-900/95 shadow-2xl backdrop-blur-xl max-h-[90vh] overflow-y-auto"
+          <div class="w-full max-w-2xl rounded-xl p-5 border border-slate-800 space-y-4 bg-[#0c1322] shadow-2xl max-h-[90vh] overflow-y-auto"
                (click)="$event.stopPropagation()">
           
             <!-- Modal Header -->
             <div class="flex items-center justify-between border-b border-slate-800 pb-3">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-purple-500 flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-indigo-500/20">
-                  👨‍👩‍👧‍👦
+                <div class="w-9 h-9 rounded-lg bg-slate-900 border border-slate-700/80 flex items-center justify-center text-emerald-400 font-bold">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
                 </div>
                 <div>
-                  <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+                  <h3 class="text-sm font-bold text-slate-100 flex items-center gap-2">
                     <span>Gerenciar Membros da Família</span>
-                    <span class="text-xs px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-mono font-bold">
+                    <span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono tabular-nums font-medium">
                       {{ members.length }} {{ members.length === 1 ? 'membro' : 'membros' }}
                     </span>
                   </h3>
                   <p class="text-xs text-slate-400">
-                    Adicione, edite ou remova membros da família. Cada membro possui seu próprio fluxo de rendimentos, capital de giro e reserva de emergência!
+                    Fluxos individuais de rendimentos, capital de giro e reserva de emergência por membro
                   </p>
                 </div>
               </div>
 
-              <button (click)="closeMemberManagerModal()" class="text-slate-400 hover:text-white text-xs px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 hover:bg-slate-700 cursor-pointer">
-                ✕ Fechar
+              <button (click)="closeMemberManagerModal()" class="text-slate-400 hover:text-white text-xs px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800 transition cursor-pointer flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                <span>Fechar</span>
               </button>
             </div>
 
             <!-- Toast / Feedback Message -->
             @if (memberFeedbackMessage) {
-              <div class="p-3 bg-emerald-500/15 border border-emerald-500/40 rounded-xl text-emerald-300 text-xs font-semibold flex items-center gap-2 animate-in fade-in">
-                <span>✓</span>
+              <div class="p-2.5 bg-slate-900 border border-emerald-500/40 rounded-lg text-emerald-400 text-xs font-medium flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
                 <span>{{ memberFeedbackMessage }}</span>
               </div>
             }
@@ -216,36 +251,42 @@ const MONTH_NAMES = [
             <!-- Members Grid (Cards) -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               @for (mem of members; track mem.id) {
-                <div class="bg-slate-900/90 border border-slate-800 rounded-xl p-3.5 space-y-2.5 hover:border-slate-700 transition">
+                <div class="bg-[#090e1a] border border-slate-800 rounded-lg p-3 space-y-2.5 hover:border-slate-700 transition">
                   <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2">
-                      <span class="text-2xl">{{ mem.icon }}</span>
+                      <div class="w-7 h-7 rounded-md bg-slate-900 border border-slate-800 flex items-center justify-center font-bold text-xs text-slate-300">
+                        {{ mem.name.substring(0, 2).toUpperCase() }}
+                      </div>
                       <div>
-                        <h4 class="text-sm font-bold text-white">{{ mem.name }}</h4>
-                        <span class="text-[10px] px-2 py-0.5 rounded font-mono uppercase" [ngClass]="getMemberBadgeClass(mem)">
+                        <h4 class="text-xs font-bold text-slate-100">{{ mem.name }}</h4>
+                        <span class="text-[9px] px-1.5 py-0.2 rounded font-mono uppercase bg-slate-900 text-slate-400 border border-slate-800">
                           {{ mem.color }}
                         </span>
                       </div>
                     </div>
 
                     <div class="flex items-center gap-1">
-                      <button (click)="startEditMember(mem)" title="Editar Membro" class="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-indigo-300 text-xs cursor-pointer">
-                        ✏️
+                      <button (click)="startEditMember(mem)" title="Editar Membro" class="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
                       </button>
                       <button (click)="removeMember(mem)" [disabled]="members.length <= 1" title="Remover Membro" class="p-1.5 rounded hover:bg-slate-800 text-slate-400 hover:text-rose-400 disabled:opacity-20 text-xs cursor-pointer">
-                        🗑️
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
                       </button>
                     </div>
                   </div>
 
-                  <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800/80 text-[11px] font-mono">
+                  <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800/80 text-[11px] font-mono tabular-nums">
                     <div>
                       <span class="text-slate-500 block text-[10px]">Reserva Base:</span>
-                      <span class="text-emerald-400 font-bold">R$ {{ mem.baseInitialReserve | number:'1.2-2' }}</span>
+                      <span class="text-emerald-400 font-medium">R$ {{ mem.baseInitialReserve | number:'1.2-2' }}</span>
                     </div>
                     <div>
                       <span class="text-slate-500 block text-[10px]">Giro Base:</span>
-                      <span class="text-amber-400 font-bold">R$ {{ mem.baseInitialCapitalGiro | number:'1.2-2' }}</span>
+                      <span class="text-amber-400 font-medium">R$ {{ mem.baseInitialCapitalGiro | number:'1.2-2' }}</span>
                     </div>
                   </div>
                 </div>
@@ -253,11 +294,11 @@ const MONTH_NAMES = [
             </div>
 
             <!-- Add / Edit Member Form -->
-            <div class="bg-slate-900/95 p-4 rounded-xl border border-slate-800 space-y-3">
-              <div class="text-xs font-bold text-slate-200 flex items-center justify-between">
+            <div class="bg-[#090e1a] p-3.5 rounded-lg border border-slate-800 space-y-3">
+              <div class="text-xs font-semibold text-slate-200 flex items-center justify-between">
                 <span class="flex items-center gap-2">
-                  <span class="text-indigo-400 font-mono text-sm">{{ editingMemberId ? '✏️' : '+' }}</span>
-                  <span>{{ editingMemberId ? 'Editar Membro: ' + editMemberName : 'Adicionar Novo Membro da Família' }}</span>
+                  <span class="text-emerald-400 font-mono text-sm">{{ editingMemberId ? '&bull;' : '+' }}</span>
+                  <span>{{ editingMemberId ? 'Editar Membro: ' + editMemberName : 'Adicionar Novo Membro' }}</span>
                 </span>
                 @if (editingMemberId) {
                   <button (click)="cancelEditMember()" class="text-[11px] text-slate-400 hover:text-slate-200 underline cursor-pointer">
@@ -268,100 +309,88 @@ const MONTH_NAMES = [
 
               @if (editingMemberId) {
                 <!-- Edit Form -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2.5">
                   <div class="md:col-span-2">
                     <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Nome do Membro</label>
-                    <input type="text" [(ngModel)]="editMemberName" placeholder="Ex: Carlos, Sofia, Filho..."
-                           class="w-full bg-slate-950 border border-slate-700 text-slate-100 text-xs px-3 py-2 rounded-lg focus:outline-none focus:border-indigo-400" />
+                    <input type="text" [(ngModel)]="editMemberName" placeholder="Ex: Carlos, Sofia..."
+                           class="w-full bg-[#060913] border border-slate-800 text-slate-100 text-xs px-2.5 py-1.5 rounded-lg focus:outline-none focus:border-emerald-600" />
                   </div>
                   <div>
                     <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Ícone</label>
-                    <select [(ngModel)]="editMemberIcon" class="w-full bg-slate-950 border border-slate-700 text-slate-100 text-xs px-2.5 py-2 rounded-lg focus:outline-none">
-                      <option value="👨">👨 Homem</option>
-                      <option value="👩">👩 Mulher</option>
-                      <option value="🧒">🧒 Filho(a)</option>
-                      <option value="👶">👶 Bebê</option>
-                      <option value="👵">👵 Avó</option>
-                      <option value="🧓">🧓 Avô</option>
-                      <option value="👤">👤 Outro</option>
-                      <option value="💼">💼 Trabalho</option>
+                    <select [(ngModel)]="editMemberIcon" class="w-full bg-[#060913] border border-slate-800 text-slate-200 text-xs px-2 py-1.5 rounded-lg focus:outline-none focus:border-emerald-600">
+                      <option value="👤">Padrão</option>
+                      <option value="💼">Trabalho</option>
+                      <option value="🏠">Casa</option>
                     </select>
                   </div>
                   <div>
                     <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Cor</label>
-                    <select [(ngModel)]="editMemberColor" class="w-full bg-slate-950 border border-slate-700 text-slate-100 text-xs px-2.5 py-2 rounded-lg focus:outline-none">
-                      <option value="indigo">Indigo (Azul)</option>
-                      <option value="purple">Purple (Roxo)</option>
-                      <option value="emerald">Emerald (Verde)</option>
-                      <option value="amber">Amber (Amarelo)</option>
-                      <option value="rose">Rose (Rosa)</option>
-                      <option value="sky">Sky (Ciano)</option>
+                    <select [(ngModel)]="editMemberColor" class="w-full bg-[#060913] border border-slate-800 text-slate-200 text-xs px-2 py-1.5 rounded-lg focus:outline-none focus:border-emerald-600">
+                      <option value="indigo">Indigo</option>
+                      <option value="emerald">Emerald</option>
+                      <option value="slate">Slate</option>
+                      <option value="amber">Amber</option>
                       <option value="cyan">Cyan</option>
                     </select>
                   </div>
                   <div>
                     <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Reserva Base (R$)</label>
                     <input type="number" step="0.01" [(ngModel)]="editMemberBaseReserve" placeholder="0.00"
-                           class="w-full bg-slate-950 border border-slate-700 text-emerald-400 font-mono font-bold text-xs px-3 py-2 rounded-lg focus:outline-none text-right" />
+                           class="w-full bg-[#060913] border border-slate-800 text-emerald-400 font-mono tabular-nums font-semibold text-xs px-2.5 py-1.5 rounded-lg focus:outline-none focus:border-emerald-600 text-right" />
                   </div>
                   <div>
                     <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Giro Base (R$)</label>
                     <input type="number" step="0.01" [(ngModel)]="editMemberBaseGiro" placeholder="0.00"
-                           class="w-full bg-slate-950 border border-slate-700 text-amber-400 font-mono font-bold text-xs px-3 py-2 rounded-lg focus:outline-none text-right" />
+                           class="w-full bg-[#060913] border border-slate-800 text-amber-400 font-mono tabular-nums font-semibold text-xs px-2.5 py-1.5 rounded-lg focus:outline-none focus:border-emerald-600 text-right" />
                   </div>
                   <div class="md:col-span-5 flex justify-end gap-2 pt-1">
-                    <button (click)="saveEditMember()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition shadow cursor-pointer">
-                      ✓ Salvar Alterações
+                    <button (click)="saveEditMember()" class="px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white rounded-lg text-xs font-medium transition cursor-pointer border border-emerald-600/30">
+                      Salvar Alterações
                     </button>
                   </div>
                 </div>
               } @else {
                 <!-- Add Form -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2.5">
                   <div class="md:col-span-2">
                     <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Nome do Membro *</label>
-                    <input type="text" [(ngModel)]="newMemberName" (keyup.enter)="addMember()" placeholder="Ex: Carlos, Sofia, Filho..."
-                           class="w-full bg-slate-950 border border-slate-700 text-slate-100 text-xs px-3 py-2 rounded-lg focus:outline-none focus:border-indigo-400" />
+                    <input type="text" [(ngModel)]="newMemberName" (keyup.enter)="addMember()" placeholder="Ex: Carlos, Sofia..."
+                           class="w-full bg-[#060913] border border-slate-800 text-slate-100 text-xs px-2.5 py-1.5 rounded-lg focus:outline-none focus:border-emerald-600" />
                   </div>
                   <div>
-                    <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Ícone</label>
-                    <select [(ngModel)]="newMemberIcon" class="w-full bg-slate-950 border border-slate-700 text-slate-100 text-xs px-2.5 py-2 rounded-lg focus:outline-none">
-                      <option value="👨">👨 Homem</option>
-                      <option value="👩">👩 Mulher</option>
-                      <option value="🧒">🧒 Filho(a)</option>
-                      <option value="👶">👶 Bebê</option>
-                      <option value="👵">👵 Avó</option>
-                      <option value="🧓">🧓 Avô</option>
-                      <option value="👤">👤 Outro</option>
-                      <option value="💼">💼 Trabalho</option>
+                    <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Identificador</label>
+                    <select [(ngModel)]="newMemberIcon" class="w-full bg-[#060913] border border-slate-800 text-slate-200 text-xs px-2 py-1.5 rounded-lg focus:outline-none focus:border-emerald-600">
+                      <option value="👤">Padrão</option>
+                      <option value="💼">Trabalho</option>
+                      <option value="🏠">Casa</option>
                     </select>
                   </div>
                   <div>
-                    <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Cor</label>
-                    <select [(ngModel)]="newMemberColor" class="w-full bg-slate-950 border border-slate-700 text-slate-100 text-xs px-2.5 py-2 rounded-lg focus:outline-none">
-                      <option value="indigo">Indigo (Azul)</option>
-                      <option value="purple">Purple (Roxo)</option>
-                      <option value="emerald">Emerald (Verde)</option>
-                      <option value="amber">Amber (Amarelo)</option>
-                      <option value="rose">Rose (Rosa)</option>
-                      <option value="sky">Sky (Ciano)</option>
+                    <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Destaque</label>
+                    <select [(ngModel)]="newMemberColor" class="w-full bg-[#060913] border border-slate-800 text-slate-200 text-xs px-2 py-1.5 rounded-lg focus:outline-none focus:border-emerald-600">
+                      <option value="indigo">Indigo</option>
+                      <option value="emerald">Emerald</option>
+                      <option value="slate">Slate</option>
+                      <option value="amber">Amber</option>
                       <option value="cyan">Cyan</option>
                     </select>
                   </div>
                   <div>
                     <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Reserva Base (R$)</label>
                     <input type="number" step="0.01" [(ngModel)]="newMemberBaseReserve" (keyup.enter)="addMember()" placeholder="0.00"
-                           class="w-full bg-slate-950 border border-slate-700 text-emerald-400 font-mono font-bold text-xs px-3 py-2 rounded-lg focus:outline-none text-right" />
+                           class="w-full bg-[#060913] border border-slate-800 text-emerald-400 font-mono tabular-nums font-semibold text-xs px-2.5 py-1.5 rounded-lg focus:outline-none focus:border-emerald-600 text-right" />
                   </div>
                   <div>
                     <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Giro Base (R$)</label>
                     <input type="number" step="0.01" [(ngModel)]="newMemberBaseGiro" (keyup.enter)="addMember()" placeholder="0.00"
-                           class="w-full bg-slate-950 border border-slate-700 text-amber-400 font-mono font-bold text-xs px-3 py-2 rounded-lg focus:outline-none text-right" />
+                           class="w-full bg-[#060913] border border-slate-800 text-amber-400 font-mono tabular-nums font-semibold text-xs px-2.5 py-1.5 rounded-lg focus:outline-none focus:border-emerald-600 text-right" />
                   </div>
                   <div class="md:col-span-5 flex justify-end gap-2 pt-1">
-                    <button (click)="addMember()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition shadow flex items-center gap-1.5 cursor-pointer">
-                      <span>+</span>
-                      <span>Adicionar Membro à Família</span>
+                    <button (click)="addMember()" class="px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white rounded-lg text-xs font-medium transition flex items-center gap-1.5 cursor-pointer border border-emerald-600/30">
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                      </svg>
+                      <span>Adicionar Membro</span>
                     </button>
                   </div>
                 </div>
@@ -376,72 +405,77 @@ const MONTH_NAMES = [
       <!-- EXPENSE CATALOG DRAWER / MODAL (CATÁLOGO DE DESPESAS POR USUÁRIO) -->
       <!-- ========================================================================= -->
       @if (showCatalogDrawer) {
-        <div class="glass-panel rounded-2xl p-5 border-2 border-purple-500/40 space-y-4 animate-in fade-in duration-200 bg-slate-950/90 shadow-2xl">
+        <div class="bg-[#0c1322] border border-slate-800 rounded-xl p-4 sm:p-5 space-y-4 shadow-xl">
           
           <!-- Catalog Header -->
           <div class="flex items-center justify-between border-b border-slate-800 pb-3">
             <div class="flex items-center gap-3">
-              <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white font-bold text-lg shadow-lg shadow-purple-500/20">
-                📑
+              <div class="w-9 h-9 rounded-lg bg-slate-900 border border-slate-700/80 flex items-center justify-center text-emerald-400 font-bold">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                </svg>
               </div>
               <div>
-                <h3 class="text-base font-extrabold text-white flex items-center gap-2">
-                  <span>Catálogo de Despesas & Valores Padrão</span>
-                  <span class="text-xs px-2 py-0.5 rounded-full bg-purple-500/20 text-purple-300 font-mono">
+                <h3 class="text-sm font-bold text-slate-100 flex items-center gap-2">
+                  <span>Catálogo de Despesas &amp; Valores Padrão</span>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-slate-800 text-slate-300 font-mono tabular-nums font-medium">
                     {{ catalogExpenses.length }} cadastradas
                   </span>
                 </h3>
                 <p class="text-xs text-slate-400">
-                  Crie e personalize despesas para qualquer membro da família ou 🏠 Compartilhadas com valores padrão. Edite a qualquer momento!
+                  Despesas recorrentes e valores pré-definidos para membros da família ou compartilhadas
                 </p>
               </div>
             </div>
 
-            <button (click)="toggleCatalogDrawer()" class="text-slate-400 hover:text-white text-xs px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800 cursor-pointer">
-              ✕ Fechar Catálogo
+            <button (click)="toggleCatalogDrawer()" class="text-slate-400 hover:text-white text-xs px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 hover:bg-slate-800 transition cursor-pointer flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              <span>Fechar</span>
             </button>
           </div>
 
           <!-- Catalog Filter Tabs by Owner -->
-          <div class="flex items-center gap-2 flex-wrap border-b border-slate-800/80 pb-3">
-            <span class="text-slate-400 text-xs font-mono">Filtrar por Usuário:</span>
+          <div class="flex items-center gap-1.5 flex-wrap border-b border-slate-800/80 pb-3">
+            <span class="text-slate-400 text-xs font-mono mr-1">Filtrar:</span>
             
             <button (click)="catalogFilterOwner = 'ALL'"
-                    class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
-                    [ngClass]="catalogFilterOwner === 'ALL' ? 'bg-purple-600 text-white shadow' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'">
-              <span>👥 Todas ({{ catalogExpenses.length }})</span>
+                    class="px-2.5 py-1.5 rounded-md text-xs font-medium transition cursor-pointer"
+                    [ngClass]="catalogFilterOwner === 'ALL' ? 'bg-slate-800 text-white border border-slate-700/80' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'">
+              Todas ({{ catalogExpenses.length }})
             </button>
 
             @for (mem of members; track mem.id) {
               <button (click)="catalogFilterOwner = mem.name"
-                      class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
-                      [ngClass]="catalogFilterOwner === mem.name ? 'bg-indigo-600 text-white shadow' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'">
-                <span>{{ mem.icon }} {{ mem.name }} ({{ getCatalogCountByOwner(mem.name) }})</span>
+                      class="px-2.5 py-1.5 rounded-md text-xs font-medium transition cursor-pointer"
+                      [ngClass]="catalogFilterOwner === mem.name ? 'bg-slate-800 text-white border border-slate-700/80' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'">
+                {{ mem.name }} ({{ getCatalogCountByOwner(mem.name) }})
               </button>
             }
 
             <button (click)="catalogFilterOwner = 'Compartilhado'"
-                    class="px-3 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
-                    [ngClass]="catalogFilterOwner === 'Compartilhado' ? 'bg-teal-600 text-white shadow' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'">
-              <span>🏠 Compartilhadas ({{ getCatalogCountByOwner('Compartilhado') }})</span>
+                    class="px-2.5 py-1.5 rounded-md text-xs font-medium transition cursor-pointer"
+                    [ngClass]="catalogFilterOwner === 'Compartilhado' ? 'bg-slate-800 text-white border border-slate-700/80' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'">
+              Compartilhadas ({{ getCatalogCountByOwner('Compartilhado') }})
             </button>
           </div>
 
           <!-- Form to Create New Catalog Item -->
-          <div class="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800 space-y-3">
-            <div class="text-xs font-bold text-slate-200 flex items-center gap-2">
+          <div class="bg-[#090e1a] p-3 rounded-lg border border-slate-800 space-y-2.5">
+            <div class="text-xs font-semibold text-slate-200 flex items-center gap-2">
               <span class="text-emerald-400 font-mono">+</span>
               <span>Cadastrar Nova Despesa no Catálogo</span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2.5">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-2">
               
               <!-- Description -->
               <div class="md:col-span-2">
                 <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Descrição da Despesa</label>
                 <input type="text" [(ngModel)]="newCatalogDesc" (keyup.enter)="createCatalogItem()"
                        placeholder="Ex: Financiamento, Seguro, Academia..."
-                       class="w-full bg-slate-950 border border-slate-700 text-slate-100 text-xs px-3 py-2 rounded-lg focus:outline-none focus:border-purple-400 font-sans" />
+                       class="w-full bg-[#060913] border border-slate-800 text-slate-100 text-xs px-2.5 py-1.5 rounded-lg focus:outline-none focus:border-emerald-600 font-sans" />
               </div>
 
               <!-- Default Amount -->
@@ -449,17 +483,17 @@ const MONTH_NAMES = [
                 <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Valor Padrão (R$)</label>
                 <input type="number" step="0.01" [(ngModel)]="newCatalogAmount" (keyup.enter)="createCatalogItem()"
                        placeholder="0.00"
-                       class="w-full bg-slate-950 border border-slate-700 text-emerald-400 font-mono font-bold text-xs px-3 py-2 rounded-lg focus:outline-none focus:border-purple-400 text-right" />
+                       class="w-full bg-[#060913] border border-slate-800 text-emerald-400 font-mono tabular-nums font-semibold text-xs px-2.5 py-1.5 rounded-lg focus:outline-none focus:border-emerald-600 text-right" />
               </div>
 
               <!-- Owner -->
               <div>
                 <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Responsável</label>
-                <select [(ngModel)]="newCatalogOwner" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs px-2.5 py-2 rounded-lg focus:outline-none">
+                <select [(ngModel)]="newCatalogOwner" class="w-full bg-[#060913] border border-slate-800 text-slate-200 text-xs px-2 py-1.5 rounded-lg focus:outline-none focus:border-emerald-600">
                   @for (mem of members; track mem.id) {
-                    <option [value]="mem.name">{{ mem.icon }} {{ mem.name }}</option>
+                    <option [value]="mem.name">{{ mem.name }}</option>
                   }
-                  <option value="Compartilhado">🏠 Compartilhado</option>
+                  <option value="Compartilhado">Compartilhado</option>
                 </select>
               </div>
 
@@ -467,18 +501,18 @@ const MONTH_NAMES = [
               <div class="flex items-end gap-2">
                 <div class="flex-1">
                   <label class="block text-[10px] text-slate-400 uppercase font-mono mb-1">Categoria</label>
-                  <select [(ngModel)]="newCatalogCategory" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs px-2 py-2 rounded-lg focus:outline-none">
-                    <option value="CARTAO">💳 Cartão</option>
-                    <option value="MORADIA">🏠 Moradia</option>
-                    <option value="CONTAS">💡 Contas</option>
-                    <option value="TAXAS">🏛️ Taxas/Impostos</option>
-                    <option value="REFORMA">🔧 Reforma</option>
-                    <option value="GERAL">📦 Geral</option>
+                  <select [(ngModel)]="newCatalogCategory" class="w-full bg-[#060913] border border-slate-800 text-slate-200 text-xs px-2 py-1.5 rounded-lg focus:outline-none focus:border-emerald-600">
+                    <option value="CARTAO">Cartão</option>
+                    <option value="MORADIA">Moradia</option>
+                    <option value="CONTAS">Contas</option>
+                    <option value="TAXAS">Taxas/Impostos</option>
+                    <option value="REFORMA">Reforma</option>
+                    <option value="GERAL">Geral</option>
                   </select>
                 </div>
                 <button (click)="createCatalogItem()" [disabled]="!newCatalogDesc.trim()"
-                        class="px-3.5 py-2 bg-purple-600 hover:bg-purple-500 disabled:opacity-40 text-white font-bold text-xs rounded-lg transition shadow-md whitespace-nowrap">
-                  + Salvar
+                        class="px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-600 disabled:opacity-40 text-white font-medium text-xs rounded-lg transition border border-emerald-600/30 whitespace-nowrap cursor-pointer">
+                  Salvar
                 </button>
               </div>
 
@@ -486,47 +520,47 @@ const MONTH_NAMES = [
           </div>
 
           <!-- Catalog Items Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-h-96 overflow-y-auto pr-1">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 max-h-96 overflow-y-auto pr-1">
             @for (item of filteredCatalogExpenses; track item.id) {
-              <div class="p-3 rounded-xl border bg-slate-900/70 transition flex flex-col justify-between gap-2.5 group"
-                   [ngClass]="editingCatalogId === item.id ? 'border-purple-500 bg-slate-900 shadow-lg' : 'border-slate-800 hover:border-slate-700'">
+              <div class="p-3 rounded-lg border bg-[#090e1a] transition flex flex-col justify-between gap-2 group"
+                   [ngClass]="editingCatalogId === item.id ? 'border-emerald-500/80 bg-slate-900 shadow-md' : 'border-slate-800 hover:border-slate-700'">
                 
                 @if (editingCatalogId === item.id) {
                   <!-- Inline Edit Mode for Catalog Item -->
                   <div class="space-y-2">
-                    <div class="text-[10px] font-mono text-purple-400 font-bold uppercase">Editando Despesa do Catálogo:</div>
+                    <div class="text-[10px] font-mono text-emerald-400 font-medium uppercase">Editando Despesa:</div>
                     
                     <div>
                       <label class="text-[9px] text-slate-400">Descrição:</label>
                       <input type="text" [(ngModel)]="editCatalogDesc"
-                             class="w-full bg-slate-950 border border-slate-700 text-white text-xs px-2 py-1 rounded focus:outline-none focus:border-purple-400" />
+                             class="w-full bg-[#060913] border border-slate-700 text-white text-xs px-2 py-1 rounded focus:outline-none focus:border-emerald-500" />
                     </div>
 
                     <div class="grid grid-cols-2 gap-2">
                       <div>
                         <label class="text-[9px] text-slate-400">Valor Padrão (R$):</label>
                         <input type="number" step="0.01" [(ngModel)]="editCatalogAmount"
-                               class="w-full bg-slate-950 border border-slate-700 text-emerald-400 font-mono font-bold text-xs px-2 py-1 rounded focus:outline-none text-right" />
+                               class="w-full bg-[#060913] border border-slate-700 text-emerald-400 font-mono tabular-nums font-semibold text-xs px-2 py-1 rounded focus:outline-none text-right" />
                       </div>
 
                       <div>
                         <label class="text-[9px] text-slate-400">Responsável:</label>
-                        <select [(ngModel)]="editCatalogOwner" class="w-full bg-slate-950 border border-slate-700 text-slate-200 text-xs px-1.5 py-1 rounded focus:outline-none">
+                        <select [(ngModel)]="editCatalogOwner" class="w-full bg-[#060913] border border-slate-700 text-slate-200 text-xs px-1.5 py-1 rounded focus:outline-none">
                           @for (mem of members; track mem.id) {
-                            <option [value]="mem.name">{{ mem.icon }} {{ mem.name }}</option>
+                            <option [value]="mem.name">{{ mem.name }}</option>
                           }
-                          <option value="Compartilhado">🏠 Compartilhado</option>
+                          <option value="Compartilhado">Compartilhado</option>
                         </select>
                       </div>
                     </div>
 
                     <div class="flex items-center justify-end gap-2 pt-1 border-t border-slate-800">
-                      <button (click)="cancelEditCatalogItem()" class="px-2.5 py-1 text-slate-400 hover:text-white text-xs rounded bg-slate-800">
+                      <button (click)="cancelEditCatalogItem()" class="px-2 py-1 text-slate-400 hover:text-white text-xs rounded bg-slate-800 cursor-pointer">
                         Cancelar
                       </button>
                       <button (click)="saveEditCatalogItem(item)" [disabled]="!editCatalogDesc.trim()"
-                              class="px-3 py-1 bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs rounded shadow">
-                        Salvar Alterações
+                              class="px-2.5 py-1 bg-emerald-700 hover:bg-emerald-600 text-white font-medium text-xs rounded border border-emerald-600/30 cursor-pointer">
+                        Salvar
                       </button>
                     </div>
                   </div>
@@ -534,59 +568,61 @@ const MONTH_NAMES = [
                   <!-- Standard Display Mode -->
                   <div class="flex items-start justify-between gap-2">
                     <div class="flex items-center gap-2">
-                      <span class="text-base">{{ item.icon || '💳' }}</span>
                       <div>
-                        <div class="text-xs font-bold text-slate-100 flex items-center gap-1.5">
+                        <div class="text-xs font-semibold text-slate-100 flex items-center gap-1.5">
                           <span>{{ item.description }}</span>
                         </div>
-                        <span class="text-[10px] px-2 py-0.5 rounded font-bold uppercase inline-block mt-1"
-                              [ngClass]="getOwnerBadgeClass(item.owner)">
+                        <span class="text-[9px] px-1.5 py-0.2 rounded font-mono uppercase inline-block mt-0.5 bg-slate-900 border border-slate-800 text-slate-400">
                           {{ getOwnerLabel(item.owner) }}
                         </span>
                       </div>
                     </div>
 
-                    <div class="text-right font-mono">
-                      <div class="text-xs font-extrabold text-emerald-400">
+                    <div class="text-right font-mono tabular-nums">
+                      <div class="text-xs font-semibold text-emerald-400">
                         R$ {{ item.defaultAmount | number:'1.2-2' }}
                       </div>
-                      <div class="text-[9px] text-slate-500">Valor Padrão</div>
+                      <div class="text-[9px] text-slate-500">Padrão</div>
                     </div>
                   </div>
 
                   <!-- Action Buttons on Catalog Item -->
                   <div class="flex items-center justify-between border-t border-slate-800/80 pt-2 text-xs">
-                    <div class="flex items-center gap-1.5">
+                    <div class="flex items-center gap-1">
                       <button (click)="startEditCatalogItem(item)" 
-                              title="Editar descrição ou valor padrão desta despesa"
-                              class="px-2 py-1 rounded bg-slate-800 hover:bg-purple-600 hover:text-white text-slate-300 text-[11px] font-semibold transition">
-                        ✏️ Editar
+                              title="Editar despesa"
+                              class="p-1 rounded bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-slate-200 text-xs transition cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                        </svg>
                       </button>
 
                       <button (click)="deleteCatalogItem(item)"
                               title="Remover do catálogo"
-                              class="p-1 rounded text-slate-500 hover:text-rose-400 hover:bg-slate-800 transition">
-                        🗑️
+                              class="p-1 rounded bg-slate-900 text-slate-500 hover:text-rose-400 hover:bg-slate-800 transition cursor-pointer">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
                       </button>
                     </div>
 
-                    <div class="flex items-center gap-1">
+                    <div class="flex items-center gap-1 font-mono text-[10px]">
                       <button (click)="insertCatalogItemIntoMonth(item, primaryDisplayedMonth)"
-                              title="Inserir esta despesa apenas no mês de {{ primaryDisplayedMonth.monthName }}"
-                              class="px-2 py-1 rounded bg-slate-800 hover:bg-emerald-600 hover:text-white text-emerald-400 text-[10px] font-bold transition">
+                              title="Inserir apenas em {{ primaryDisplayedMonth.monthName }}"
+                              class="px-1.5 py-0.5 rounded bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition cursor-pointer">
                         + {{ primaryDisplayedMonth.monthName }}
                       </button>
 
                       <button (click)="insertCatalogItemIntoForwardMonths(item, primaryDisplayedMonth)"
-                              title="Replicar esta despesa a partir de {{ primaryDisplayedMonth.monthName }} para os próximos meses"
-                              class="px-2 py-1 rounded bg-slate-800 hover:bg-purple-600 hover:text-white text-purple-300 text-[10px] font-bold transition">
-                        🔁 Próximos Meses
+                              title="Replicar nos meses seguintes"
+                              class="px-1.5 py-0.5 rounded bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition cursor-pointer">
+                        &rarr; Seguintes
                       </button>
 
                       <button (click)="insertCatalogItemIntoAllMonths(item)"
-                              title="Inserir como linha em todos os 12 meses do ano"
-                              class="px-2 py-1 rounded bg-slate-800 hover:bg-cyan-600 hover:text-white text-cyan-400 text-[10px] font-bold transition">
-                        🗓️ Todos
+                              title="Inserir em todos os 12 meses"
+                              class="px-1.5 py-0.5 rounded bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition cursor-pointer">
+                        Todos
                       </button>
                     </div>
                   </div>
@@ -600,7 +636,7 @@ const MONTH_NAMES = [
       }
 
       <!-- Time Horizon / Period Selector Ribbon (5 Temporal Modes) -->
-      <div class="glass-panel p-2.5 sm:p-3 rounded-2xl space-y-2.5 border border-slate-800">
+      <div class="bg-[#0c1322] p-2.5 sm:p-3 rounded-xl space-y-2.5 border border-slate-800">
         
         <!-- Months Row (Always Showed) + Expand/Collapse Button -->
         <div class="flex items-center justify-between gap-2">
@@ -610,8 +646,8 @@ const MONTH_NAMES = [
             @if (timeHorizon === 'MENSAL') {
               @for (m of currentYearMonths; track m.id; let idx = $index) {
                 <button (click)="activeMonthIndex = idx"
-                        class="px-3 py-1.5 text-xs font-semibold rounded-lg transition whitespace-nowrap"
-                        [ngClass]="activeMonthIndex === idx ? 'bg-slate-800 text-emerald-400 border border-emerald-500/30 font-bold shadow-sm shadow-emerald-500/10' : 'bg-transparent text-slate-400 hover:text-white'">
+                        class="px-3 py-1.5 text-xs font-medium rounded-lg transition whitespace-nowrap cursor-pointer"
+                        [ngClass]="activeMonthIndex === idx ? 'bg-slate-800 text-fintech-400 border border-fintech-500/30 font-semibold' : 'bg-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'">
                   {{ m.monthName }}
                 </button>
               }
@@ -620,8 +656,8 @@ const MONTH_NAMES = [
             @if (timeHorizon === 'BIMESTRAL') {
               @for (b of bimesters; track b.id; let bIdx = $index) {
                 <button (click)="activeBimesterIndex = bIdx"
-                        class="px-3 py-1.5 text-xs font-semibold rounded-lg transition whitespace-nowrap"
-                        [ngClass]="activeBimesterIndex === bIdx ? 'bg-slate-800 text-emerald-400 border border-emerald-500/30 font-bold shadow-sm shadow-emerald-500/10' : 'bg-transparent text-slate-400 hover:text-white'">
+                        class="px-3 py-1.5 text-xs font-medium rounded-lg transition whitespace-nowrap cursor-pointer"
+                        [ngClass]="activeBimesterIndex === bIdx ? 'bg-slate-800 text-fintech-400 border border-fintech-500/30 font-semibold' : 'bg-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'">
                   {{ b.title }} ({{ b.subtitle }})
                 </button>
               }
@@ -630,8 +666,8 @@ const MONTH_NAMES = [
             @if (timeHorizon === 'TRIMESTRAL') {
               @for (q of quarters; track q.id; let qIdx = $index) {
                 <button (click)="activeQuarterIndex = qIdx"
-                        class="px-3 py-1.5 text-xs font-semibold rounded-lg transition whitespace-nowrap"
-                        [ngClass]="activeQuarterIndex === qIdx ? 'bg-slate-800 text-emerald-400 border border-emerald-500/30 font-bold shadow-sm shadow-emerald-500/10' : 'bg-transparent text-slate-400 hover:text-white'">
+                        class="px-3 py-1.5 text-xs font-medium rounded-lg transition whitespace-nowrap cursor-pointer"
+                        [ngClass]="activeQuarterIndex === qIdx ? 'bg-slate-800 text-fintech-400 border border-fintech-500/30 font-semibold' : 'bg-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'">
                   {{ q.title }} ({{ q.subtitle }})
                 </button>
               }
@@ -640,8 +676,8 @@ const MONTH_NAMES = [
             @if (timeHorizon === 'SEMESTRAL') {
               @for (s of semesters; track s.id; let sIdx = $index) {
                 <button (click)="activeSemesterIndex = sIdx"
-                        class="px-3.5 py-1.5 text-xs font-semibold rounded-lg transition whitespace-nowrap"
-                        [ngClass]="activeSemesterIndex === sIdx ? 'bg-slate-800 text-emerald-400 border border-emerald-500/30 font-bold shadow-sm shadow-emerald-500/10' : 'bg-transparent text-slate-400 hover:text-white'">
+                        class="px-3.5 py-1.5 text-xs font-medium rounded-lg transition whitespace-nowrap cursor-pointer"
+                        [ngClass]="activeSemesterIndex === sIdx ? 'bg-slate-800 text-fintech-400 border border-fintech-500/30 font-semibold' : 'bg-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/40'">
                   {{ s.title }} ({{ s.subtitle }})
                 </button>
               }
@@ -649,7 +685,7 @@ const MONTH_NAMES = [
 
             @if (timeHorizon === 'ANUAL') {
               <span class="text-xs text-slate-400 font-mono px-2 py-1">
-                Visualizando todos os 12 meses de {{ selectedYear }} lado a lado com rolagem contínua
+                Visualizando todos os 12 meses de {{ selectedYear }} em rolagem contínua
               </span>
             }
           </div>
@@ -657,10 +693,12 @@ const MONTH_NAMES = [
           <!-- Expand/Collapse Period Options Button -->
           <button (click)="showPeriodOptions = !showPeriodOptions"
                   title="Alterar modo de visualização (Mensal, Bimestral, Trimestral, Semestral, Anual)"
-                  class="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 hover:border-slate-700 transition flex items-center gap-1.5 shrink-0">
+                  class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 transition flex items-center gap-1.5 shrink-0 cursor-pointer">
             <span class="text-slate-400 font-mono text-[11px] hidden sm:inline">Período:</span>
-            <span class="text-emerald-400 font-bold font-mono text-[11px]">{{ getTimeHorizonLabel(timeHorizon) }}</span>
-            <span class="text-[9px] text-slate-500">{{ showPeriodOptions ? '▲' : '▼' }}</span>
+            <span class="text-fintech-400 font-semibold font-mono text-[11px]">{{ getTimeHorizonLabel(timeHorizon) }}</span>
+            <svg class="w-3.5 h-3.5 text-slate-500 transition-transform duration-150" [class.rotate-180]="showPeriodOptions" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
           </button>
 
         </div>
@@ -669,43 +707,43 @@ const MONTH_NAMES = [
         @if (showPeriodOptions) {
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 pt-2.5 border-t border-slate-800/80">
             <div class="flex items-center gap-1.5 flex-wrap">
-              <span class="text-slate-400 font-mono text-xs px-1">Período de Visualização:</span>
+              <span class="text-slate-400 font-mono text-xs px-1">Visualização:</span>
               
               <button (click)="setTimeHorizon('MENSAL')"
-                      class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5"
-                      [ngClass]="timeHorizon === 'MENSAL' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-500/20' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'">
-                <span>📅 Mês (1 Mês)</span>
+                      class="px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer"
+                      [ngClass]="timeHorizon === 'MENSAL' ? 'bg-fintech-600 text-white font-semibold' : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'">
+                Mês Individual
               </button>
 
               <button (click)="setTimeHorizon('BIMESTRAL')"
-                      class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5"
-                      [ngClass]="timeHorizon === 'BIMESTRAL' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-500/20' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'">
-                <span>🌓 Bimestral (2 Meses)</span>
+                      class="px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer"
+                      [ngClass]="timeHorizon === 'BIMESTRAL' ? 'bg-fintech-600 text-white font-semibold' : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'">
+                Bimestral (2m)
               </button>
 
               <button (click)="setTimeHorizon('TRIMESTRAL')"
-                      class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5"
-                      [ngClass]="timeHorizon === 'TRIMESTRAL' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-500/20' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'">
-                <span>📊 Trimestral (3 Meses)</span>
+                      class="px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer"
+                      [ngClass]="timeHorizon === 'TRIMESTRAL' ? 'bg-fintech-600 text-white font-semibold' : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'">
+                Trimestral (3m)
               </button>
 
               <button (click)="setTimeHorizon('SEMESTRAL')"
-                      class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5"
-                      [ngClass]="timeHorizon === 'SEMESTRAL' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-500/20' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'">
-                <span>📈 Semestral (6 Meses)</span>
+                      class="px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer"
+                      [ngClass]="timeHorizon === 'SEMESTRAL' ? 'bg-fintech-600 text-white font-semibold' : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'">
+                Semestral (6m)
               </button>
 
               <button (click)="setTimeHorizon('ANUAL')"
-                      class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5"
-                      [ngClass]="timeHorizon === 'ANUAL' ? 'bg-emerald-600 text-white shadow-md shadow-emerald-500/20' : 'bg-slate-900 text-slate-400 hover:text-white border border-slate-800'">
-                <span>🗓️ Ano Completo (12 Meses)</span>
+                      class="px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer"
+                      [ngClass]="timeHorizon === 'ANUAL' ? 'bg-fintech-600 text-white font-semibold' : 'bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800'">
+                Ano Completo (12m)
               </button>
             </div>
 
             <!-- Active Period Summary Tag -->
             <div class="flex items-center gap-2 text-xs font-mono">
               <span class="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 border border-slate-800">
-                Colunas Exibidas: <strong class="text-emerald-400">{{ displayedMonths.length }} meses individuais</strong>
+                Colunas: <strong class="text-fintech-400 font-semibold">{{ displayedMonths.length }} meses</strong>
               </span>
             </div>
           </div>
@@ -718,83 +756,83 @@ const MONTH_NAMES = [
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
           
           <!-- Capital de Giro (Residual após Resultado do Mês) -->
-          <div class="glass-panel p-4 rounded-2xl relative overflow-hidden group border border-slate-800">
-            <div class="text-[11px] font-bold text-amber-400 uppercase tracking-wider flex items-center justify-between">
+          <div class="bg-[#0c1322] p-4 rounded-xl border border-slate-800 relative">
+            <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
               <span>Capital de Giro</span>
-              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-300">
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-amber-400 border border-slate-700/60">
                 {{ primaryDisplayedMonth.monthName }}
               </span>
             </div>
-            <div class="text-2xl font-extrabold text-amber-300 mt-1.5 font-mono">
+            <div class="text-2xl font-bold text-amber-400 mt-1.5 font-mono tabular-nums">
               R$ {{ getProfileFinalCapitalGiro(primaryDisplayedMonth) | number:'1.2-2' }}
             </div>
-            <div class="text-[11px] text-slate-400 mt-1">
-              Saldo residual disponível após o resultado do mês
+            <div class="text-[11px] text-slate-500 mt-1">
+              Saldo residual disponível pós-mês
             </div>
           </div>
 
           <!-- Rendimentos -->
-          <div class="glass-panel p-4 rounded-2xl relative overflow-hidden group border border-slate-800">
-            <div class="text-[11px] font-bold text-teal-400 uppercase tracking-wider flex items-center justify-between">
+          <div class="bg-[#0c1322] p-4 rounded-xl border border-slate-800 relative">
+            <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
               <span>Rendimentos</span>
-              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-teal-500/10 text-teal-300">Entradas</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-fintech-400 border border-slate-700/60">Entradas</span>
             </div>
-            <div class="text-2xl font-extrabold text-teal-400 mt-1.5 font-mono">
+            <div class="text-2xl font-bold text-fintech-400 mt-1.5 font-mono tabular-nums">
               R$ {{ getProfileIncome(primaryDisplayedMonth) | number:'1.2-2' }}
             </div>
-            <div class="text-[11px] text-slate-400 mt-1">
+            <div class="text-[11px] text-slate-500 mt-1">
               Receitas {{ activeProfile === 'CONSOLIDADO' ? 'Totais' : 'de ' + activeProfile }}
             </div>
           </div>
 
           <!-- Total de Gastos -->
-          <div class="glass-panel p-4 rounded-2xl relative overflow-hidden group border border-slate-800">
-            <div class="text-[11px] font-bold text-rose-400 uppercase tracking-wider flex items-center justify-between">
+          <div class="bg-[#0c1322] p-4 rounded-xl border border-slate-800 relative">
+            <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
               <span>Total de Gastos</span>
-              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-300">
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-rose-400 border border-slate-700/60">
                 {{ getFilteredExpenses(primaryDisplayedMonth).length }} despesas
               </span>
             </div>
-            <div class="text-2xl font-extrabold text-rose-400 mt-1.5 font-mono">
+            <div class="text-2xl font-bold text-rose-400 mt-1.5 font-mono tabular-nums">
               R$ {{ getProfileTotalExpenses(primaryDisplayedMonth) | number:'1.2-2' }}
             </div>
-            <div class="text-[11px] text-slate-400 mt-1">
+            <div class="text-[11px] text-slate-500 mt-1">
               Gastos {{ activeProfile === 'CONSOLIDADO' ? 'Consolidados' : 'de ' + activeProfile }}
             </div>
           </div>
 
           <!-- Resultado do Mês (Surplus / Deficit = Rendimentos - Gastos) -->
-          <div class="glass-panel p-4 rounded-2xl relative overflow-hidden group border border-slate-800">
-            <div class="text-[11px] font-bold uppercase tracking-wider flex items-center justify-between"
-                 [ngClass]="getProfileResultado(primaryDisplayedMonth) >= 0 ? 'text-emerald-400' : 'text-rose-400'">
+          <div class="bg-[#0c1322] p-4 rounded-xl border border-slate-800 relative">
+            <div class="text-[11px] font-semibold uppercase tracking-wider flex items-center justify-between"
+                 [ngClass]="getProfileResultado(primaryDisplayedMonth) >= 0 ? 'text-fintech-400' : 'text-rose-400'">
               <span>Resultado do Mês</span>
-              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded"
-                    [ngClass]="getProfileResultado(primaryDisplayedMonth) >= 0 ? 'bg-emerald-500/10 text-emerald-300' : 'bg-rose-500/10 text-rose-300'">
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded border border-slate-700/60"
+                    [ngClass]="getProfileResultado(primaryDisplayedMonth) >= 0 ? 'bg-fintech-950/40 text-fintech-400' : 'bg-rose-950/40 text-rose-400'">
                 {{ getProfileResultado(primaryDisplayedMonth) >= 0 ? 'Superávit' : 'Déficit' }}
               </span>
             </div>
-            <div class="text-2xl font-extrabold mt-1.5 font-mono"
-                 [ngClass]="getProfileResultado(primaryDisplayedMonth) >= 0 ? 'text-emerald-400' : 'text-rose-400'">
+            <div class="text-2xl font-bold mt-1.5 font-mono tabular-nums"
+                 [ngClass]="getProfileResultado(primaryDisplayedMonth) >= 0 ? 'text-fintech-400' : 'text-rose-400'">
               {{ getProfileResultado(primaryDisplayedMonth) >= 0 ? '+' : '' }}R$ {{ getProfileResultado(primaryDisplayedMonth) | number:'1.2-2' }}
             </div>
-            <div class="text-[11px] text-slate-400 mt-1">
-              Rendimentos - Gastos exato
+            <div class="text-[11px] text-slate-500 mt-1">
+              Rendimentos - Gastos
             </div>
           </div>
 
           <!-- Caixa Final (Reserva de Emergência Protegida) -->
-          <div class="glass-panel p-4 rounded-2xl relative overflow-hidden group border border-slate-800 bg-emerald-950/20">
-            <div class="text-[11px] font-bold text-cyan-300 uppercase tracking-wider flex items-center justify-between">
+          <div class="bg-[#0c1322] p-4 rounded-xl border border-slate-800 relative">
+            <div class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center justify-between">
               <span>Caixa Final (Reserva)</span>
-              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-300">
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-cyan-400 border border-slate-700/60">
                 {{ activeProfile === 'CONSOLIDADO' ? 'Unificada' : activeProfile }}
               </span>
             </div>
-            <div class="text-2xl font-black text-cyan-300 mt-1.5 font-mono">
+            <div class="text-2xl font-bold text-cyan-300 mt-1.5 font-mono tabular-nums">
               R$ {{ getProfileFinalCash(selectedYear, primaryDisplayedMonth.monthIndex) | number:'1.2-2' }}
             </div>
-            <div class="text-[11px] text-slate-400 mt-1">
-              Reserva acumulada no banco de dados
+            <div class="text-[11px] text-slate-500 mt-1">
+              Reserva acumulada
             </div>
           </div>
 
@@ -802,41 +840,44 @@ const MONTH_NAMES = [
       }
 
       <!-- Main Spreadsheet Matrix (Renders Each Individual Month Separately) -->
-      <div class="glass-panel rounded-2xl p-5 border border-slate-800 overflow-hidden space-y-4">
+      <div class="bg-[#0c1322] rounded-xl p-5 border border-slate-800 overflow-hidden space-y-4">
         
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <h2 class="text-base font-bold text-white flex items-center gap-2">
               <span>Matriz Financeira • {{ selectedYear }}</span>
-              <span class="text-xs px-2.5 py-0.5 rounded-full font-mono font-semibold"
-                    [ngClass]="activeProfile === 'CONSOLIDADO' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-indigo-500/20 text-indigo-300'">
+              <span class="text-xs px-2.5 py-0.5 rounded-full font-mono font-medium"
+                    [ngClass]="activeProfile === 'CONSOLIDADO' ? 'bg-fintech-950/60 text-fintech-400 border border-fintech-500/30' : 'bg-slate-800 text-slate-300 border border-slate-700'">
                 {{ getActiveProfileLabel() }}
               </span>
             </h2>
-            <p class="text-xs text-slate-400">
-              💡 Despesas sincronizadas com o Catálogo • Arraste pelo ícone ⠿ para reordenar linhas.
+            <p class="text-xs text-slate-400 mt-0.5">
+              Despesas sincronizadas com o catálogo. Arraste pelo ícone ou use as setas para reordenar linhas.
             </p>
           </div>
 
-          <button (click)="toggleCatalogDrawer()" class="text-xs text-purple-400 hover:text-purple-300 font-mono font-bold flex items-center gap-1.5 self-start sm:self-auto cursor-pointer">
-            <span>📑 Abrir Gerenciador de Catálogo</span>
-            <span>→</span>
+          <button (click)="toggleCatalogDrawer()" class="text-xs text-slate-300 hover:text-white font-mono flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-850 border border-slate-800 transition cursor-pointer self-start sm:self-auto">
+            <svg class="w-3.5 h-3.5 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+            </svg>
+            <span>Catálogo de Despesas</span>
           </button>
         </div>
 
         <!-- The Interactive Matrix Table (Individual Months Side-by-Side) -->
-        <div class="overflow-x-auto border border-slate-800/80 rounded-xl max-h-[640px] overflow-y-auto">
+        <div class="overflow-x-auto border border-slate-800 rounded-xl max-h-[640px] overflow-y-auto">
           <table class="w-full text-left text-xs border-collapse font-sans">
             
             <!-- Table Header: Separate Column for Each Individual Month -->
-            <thead class="sticky top-0 z-20 bg-slate-900/95 backdrop-blur text-slate-300 font-mono text-[11px] border-b border-slate-800">
+            <thead class="sticky top-0 z-20 bg-slate-900 text-slate-300 font-mono text-[11px] border-b border-slate-800">
               <tr>
                 <th class="p-2 border-r border-slate-800 w-16 text-center text-slate-500">Ordem</th>
                 <th class="p-3 border-r border-slate-800 w-24 text-center">Usuário</th>
                 <th class="p-3 border-r border-slate-800 min-w-[200px]">Descrição da Despesa</th>
                 
                 @for (m of displayedMonths; track m.id) {
-                  <th class="p-2.5 border-r border-slate-800 min-w-[140px] text-right bg-emerald-950/20 text-emerald-300 font-bold">
+                  <th class="p-2.5 border-r border-slate-800 min-w-[140px] text-right bg-slate-900/90 text-slate-200 font-semibold font-mono">
                     <div class="text-xs">{{ m.monthName }}</div>
                     <div class="text-[9px] font-normal text-slate-400 font-mono">{{ m.yearMonth }}</div>
                   </th>
@@ -855,35 +896,47 @@ const MONTH_NAMES = [
                     (dragend)="onDragEnd()"
                     class="transition group select-none"
                     [ngClass]="{
-                      'opacity-30 bg-emerald-950/30 border-2 border-dashed border-emerald-500': draggedRowIndex === rowIdx,
-                      'border-t-2 border-emerald-400 bg-slate-800/90 shadow-lg': dragOverRowIndex === rowIdx && draggedRowIndex !== rowIdx,
+                      'opacity-30 bg-fintech-950/30 border-2 border-dashed border-fintech-500': draggedRowIndex === rowIdx,
+                      'border-t-2 border-fintech-400 bg-slate-800/90 shadow-lg': dragOverRowIndex === rowIdx && draggedRowIndex !== rowIdx,
                       'hover:bg-slate-900/50': draggedRowIndex !== rowIdx
                     }">
                   
                   <!-- Row Number & Drag Handle / Ordering Controls -->
                   <td class="p-1 border-r border-slate-800 text-center select-none"
-                      [title]="'Arraste pelo ícone ⠿ ou use ▲/▼ para reordenar'">
+                      title="Arraste para reordenar ou use as setas">
                     <div class="flex items-center justify-center gap-1">
                       
                       <!-- Drag Handle Icon -->
                       <span draggable="true"
                             (dragstart)="onDragStart($event, rowIdx)"
-                            class="cursor-grab active:cursor-grabbing text-slate-500 hover:text-emerald-400 font-mono text-base px-0.5 leading-none transition">
-                        ⠿
+                            class="cursor-grab active:cursor-grabbing text-slate-500 hover:text-slate-300 p-0.5 leading-none transition"
+                            title="Arrastar">
+                        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                          <circle cx="9" cy="5" r="1.5"></circle>
+                          <circle cx="15" cy="5" r="1.5"></circle>
+                          <circle cx="9" cy="12" r="1.5"></circle>
+                          <circle cx="15" cy="12" r="1.5"></circle>
+                          <circle cx="9" cy="19" r="1.5"></circle>
+                          <circle cx="15" cy="19" r="1.5"></circle>
+                        </svg>
                       </span>
 
                       <!-- Row Number -->
-                      <span class="text-slate-500 text-[10px] w-3 font-mono font-bold">{{ rowIdx + 1 }}</span>
+                      <span class="text-slate-500 text-[10px] w-3 font-mono font-semibold">{{ rowIdx + 1 }}</span>
 
                       <!-- Up / Down Buttons -->
                       <div class="flex flex-col">
                         <button (click)="moveRowUp(rowIdx)" [disabled]="rowIdx === 0"
-                                class="text-[9px] text-slate-500 hover:text-emerald-400 disabled:opacity-20 leading-none px-0.5 py-0.5 hover:bg-slate-800 rounded" title="Mover linha para cima">
-                          ▲
+                                class="text-slate-500 hover:text-slate-300 disabled:opacity-20 leading-none p-0.5 hover:bg-slate-800 rounded transition cursor-pointer" title="Mover linha para cima">
+                          <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="18 15 12 9 6 15"></polyline>
+                          </svg>
                         </button>
                         <button (click)="moveRowDown(rowIdx)" [disabled]="rowIdx === getVisibleExpenseRows().length - 1"
-                                class="text-[9px] text-slate-500 hover:text-emerald-400 disabled:opacity-20 leading-none px-0.5 py-0.5 hover:bg-slate-800 rounded" title="Mover linha para baixo">
-                          ▼
+                                class="text-slate-500 hover:text-slate-300 disabled:opacity-20 leading-none p-0.5 hover:bg-slate-800 rounded transition cursor-pointer" title="Mover linha para baixo">
+                          <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                          </svg>
                         </button>
                       </div>
 
@@ -895,7 +948,7 @@ const MONTH_NAMES = [
                     <button (click)="cycleOwner(item)" 
                             [disabled]="activeProfile !== 'CONSOLIDADO'"
                             [title]="'Clique para alternar responsável (Atual: ' + item.owner + ')'"
-                            class="px-2 py-0.5 rounded text-[10px] font-bold uppercase transition cursor-pointer"
+                            class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase transition cursor-pointer"
                             [ngClass]="getOwnerBadgeClass(item.owner)">
                       {{ getOwnerLabel(item.owner) }}
                     </button>
@@ -904,21 +957,21 @@ const MONTH_NAMES = [
                   <!-- Expense Description & Category (Directly Editable & Persisted) -->
                   <td class="p-2 border-r border-slate-800 font-sans">
                     <div class="flex items-center gap-2">
-                      <span class="w-2 h-2 rounded-full" [ngClass]="getCategoryColor(item.category)"></span>
+                      <span class="w-2 h-2 rounded-full shrink-0" [ngClass]="getCategoryColor(item.category)"></span>
                       <input type="text" [ngModel]="item.description" (ngModelChange)="onExpenseDescriptionChange(item, $event)"
                              placeholder="Descrição da despesa..."
-                             class="w-full bg-transparent text-slate-200 text-xs px-1.5 py-1 rounded hover:bg-slate-950 focus:bg-slate-950 focus:border-emerald-500 focus:outline-none border border-transparent font-medium" />
+                             class="w-full bg-transparent text-slate-200 text-xs px-1.5 py-1 rounded hover:bg-slate-950 focus:bg-slate-950 focus:border-slate-700 focus:outline-none border border-transparent font-medium" />
                     </div>
                   </td>
 
                   <!-- Values for Each Individual Displayed Month (Directly Inline Editable) -->
                   @for (m of displayedMonths; track m.id) {
-                    <td class="p-1.5 border-r border-slate-800 text-right bg-emerald-950/5">
+                    <td class="p-1.5 border-r border-slate-800 text-right bg-slate-950/20">
                       <input type="number" step="0.01"
                              [ngModel]="getMonthlyExpenseValue(m, item)"
                              (ngModelChange)="setMonthlyExpenseValue(m, item, $event)"
                              placeholder="-"
-                             class="w-full text-right bg-transparent text-slate-100 px-1.5 py-1 rounded hover:bg-slate-950 focus:bg-slate-950 focus:border-emerald-500 focus:outline-none border border-transparent font-mono text-xs font-semibold placeholder:text-slate-600" />
+                             class="w-full text-right bg-transparent text-slate-100 px-1.5 py-1 rounded hover:bg-slate-950 focus:bg-slate-950 focus:border-slate-700 focus:outline-none border border-transparent font-mono tabular-nums text-xs font-medium placeholder:text-slate-600" />
                     </td>
                   }
 
@@ -926,8 +979,11 @@ const MONTH_NAMES = [
                   <td class="p-1.5 text-center">
                     <button (click)="removeExpenseRow(item)" 
                             title="Remover linha"
-                            class="opacity-0 group-hover:opacity-100 text-slate-500 hover:text-rose-400 transition text-sm p-1 hover:bg-slate-800 rounded cursor-pointer">
-                      ✕
+                            class="opacity-0 group-hover:opacity-100 text-slate-500 hover:text-rose-400 transition p-1 hover:bg-slate-800 rounded cursor-pointer">
+                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                      </svg>
                     </button>
                   </td>
 
@@ -936,14 +992,14 @@ const MONTH_NAMES = [
 
               <!-- Add New Expense Row (Pulls Default Value & Category Directly from the Catalog) -->
               <tr class="bg-slate-950/50 border-t-2 border-slate-800">
-                <td class="p-2 border-r border-slate-800 text-center text-emerald-500 font-bold">+</td>
+                <td class="p-2 border-r border-slate-800 text-center text-fintech-400 font-bold">+</td>
                 
                 <td class="p-1 border-r border-slate-800 text-center">
                   <select [(ngModel)]="newRowOwner" class="bg-slate-900 border border-slate-800 text-[10px] text-slate-200 rounded px-1.5 py-1 focus:outline-none">
                     @for (mem of members; track mem.id) {
-                      <option [value]="mem.name">{{ mem.icon }} {{ mem.name }}</option>
+                      <option [value]="mem.name">{{ mem.name }}</option>
                     }
-                    <option value="Compartilhado">🏠 Compartilhado</option>
+                    <option value="Compartilhado">Compartilhado</option>
                   </select>
                 </td>
 
@@ -952,7 +1008,7 @@ const MONTH_NAMES = [
                     <input type="text" [(ngModel)]="newRowDesc" (ngModelChange)="onNewRowDescChange($event)" (keyup.enter)="addNewExpenseRow()"
                            placeholder="Descrição (selecione do catálogo)..."
                            list="knownExpenseDescriptions"
-                           class="flex-1 min-w-[160px] bg-slate-900/80 text-slate-200 text-xs px-2 py-1.5 rounded border border-slate-800 focus:border-purple-500 focus:outline-none" />
+                           class="flex-1 min-w-[160px] bg-slate-900/80 text-slate-200 text-xs px-2 py-1.5 rounded border border-slate-800 focus:border-slate-600 focus:outline-none" />
                     
                     <datalist id="knownExpenseDescriptions">
                       @for (item of catalogExpenses; track item.id) {
@@ -963,14 +1019,14 @@ const MONTH_NAMES = [
                     <!-- Scope selection: Replicate for next months vs Only current month vs All 12 months -->
                     <select [(ngModel)]="newRowReplicationMode" 
                             title="Defina se o valor padrão desta despesa deve ser replicado para os próximos meses ou apenas no mês atual"
-                            class="bg-slate-900 border border-slate-700/80 text-[10px] text-purple-300 font-bold rounded px-2 py-1 focus:outline-none focus:border-purple-400">
-                      <option value="REPLICATE_FORWARD">🔁 Replicar nos próximos meses</option>
-                      <option value="CURRENT_ONLY">📅 Apenas no mês atual ({{ primaryDisplayedMonth.monthName }})</option>
-                      <option value="ALL_MONTHS">🗓️ Todos os 12 meses</option>
+                            class="bg-slate-900 border border-slate-800 text-[10px] text-slate-300 font-medium rounded px-2 py-1 focus:outline-none focus:border-slate-600">
+                      <option value="REPLICATE_FORWARD">Replicar nos próximos meses</option>
+                      <option value="CURRENT_ONLY">Apenas no mês atual ({{ primaryDisplayedMonth.monthName }})</option>
+                      <option value="ALL_MONTHS">Todos os 12 meses</option>
                     </select>
 
                     @if (getCatalogItemByDesc(newRowDesc)) {
-                      <span class="text-[10px] text-emerald-400 font-mono bg-emerald-950/40 px-2 py-0.5 rounded border border-emerald-500/20 whitespace-nowrap" title="Valor padrão definido no Catálogo de Despesas">
+                      <span class="text-[10px] text-fintech-400 font-mono tabular-nums bg-fintech-950/40 px-2 py-0.5 rounded border border-fintech-500/20 whitespace-nowrap" title="Valor padrão definido no Catálogo de Despesas">
                         Padrão: R$ {{ getCatalogItemByDesc(newRowDesc)?.defaultAmount | number:'1.2-2' }}
                       </span>
                     }
@@ -978,10 +1034,10 @@ const MONTH_NAMES = [
                 </td>
                 
                 @for (m of displayedMonths; track m.id) {
-                  <td class="p-2 border-r border-slate-800 text-right font-mono text-[10px]">
+                  <td class="p-2 border-r border-slate-800 text-right font-mono tabular-nums text-[10px]">
                     @if (getCatalogItemByDesc(newRowDesc)) {
                       @if (newRowReplicationMode === 'ALL_MONTHS' || (newRowReplicationMode === 'REPLICATE_FORWARD' && m.monthIndex >= primaryDisplayedMonth.monthIndex) || (newRowReplicationMode === 'CURRENT_ONLY' && m.monthIndex === primaryDisplayedMonth.monthIndex)) {
-                        <span class="text-emerald-400 font-bold">R$ {{ getCatalogItemByDesc(newRowDesc)?.defaultAmount | number:'1.2-2' }}</span>
+                        <span class="text-fintech-400 font-semibold">R$ {{ getCatalogItemByDesc(newRowDesc)?.defaultAmount | number:'1.2-2' }}</span>
                       } @else {
                         <span class="text-slate-600">R$ 0,00</span>
                       }
@@ -993,7 +1049,7 @@ const MONTH_NAMES = [
 
                 <td class="p-2 text-center">
                   <button (click)="addNewExpenseRow()" [disabled]="!newRowDesc.trim()"
-                          class="px-2.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-40 text-white rounded text-[10px] font-bold shadow transition">
+                          class="px-2.5 py-1.5 bg-fintech-600 hover:bg-fintech-500 disabled:opacity-40 text-white rounded text-[10px] font-semibold transition cursor-pointer">
                     + Inserir
                   </button>
                 </td>
@@ -1002,8 +1058,10 @@ const MONTH_NAMES = [
               <!-- ========================================================= -->
               <!-- 1. SEÇÃO DE TOTAL DE GASTOS -->
               <!-- ========================================================= -->
-              <tr class="bg-slate-900/90 font-bold border-t-2 border-slate-700 text-xs">
-                <td class="p-2.5 border-r border-slate-800 text-center text-slate-500 font-mono">∑</td>
+              <tr class="bg-slate-900/90 font-semibold border-t-2 border-slate-700 text-xs">
+                <td class="p-2.5 border-r border-slate-800 text-center text-slate-400 font-mono text-[10px]">
+                  TOTAL
+                </td>
                 <td class="p-2.5 border-r border-slate-800 text-center font-mono text-[10px] text-slate-400 uppercase">
                   {{ activeProfile === 'CONSOLIDADO' ? 'TODOS' : activeProfile }}
                 </td>
@@ -1011,7 +1069,7 @@ const MONTH_NAMES = [
                   Total de Gastos ({{ activeProfile === 'CONSOLIDADO' ? 'Consolidado' : activeProfile }})
                 </td>
                 @for (m of displayedMonths; track m.id) {
-                  <td class="p-2.5 border-r border-slate-800 text-right font-mono text-rose-400 text-xs bg-rose-950/20 font-bold">
+                  <td class="p-2.5 border-r border-slate-800 text-right font-mono tabular-nums text-rose-400 text-xs bg-rose-950/20 font-bold">
                     R$ {{ getProfileTotalExpenses(m) | number:'1.2-2' }}
                   </td>
                 }
@@ -1024,9 +1082,9 @@ const MONTH_NAMES = [
               @for (mem of members; track mem.id) {
                 @if (activeProfile === 'CONSOLIDADO' || activeProfile === mem.id) {
                   <tr class="bg-slate-900/80 border-t border-slate-800/90 text-xs">
-                    <td class="p-2 border-r border-slate-800 text-center font-mono">{{ mem.icon }}</td>
+                    <td class="p-2 border-r border-slate-800 text-center font-mono text-slate-400 text-[10px]">{{ mem.name.substring(0, 2).toUpperCase() }}</td>
                     <td class="p-2 border-r border-slate-800 text-center">
-                      <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase" [ngClass]="getMemberBadgeClass(mem)">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-semibold uppercase" [ngClass]="getMemberBadgeClass(mem)">
                         {{ mem.name }}
                       </span>
                     </td>
@@ -1038,7 +1096,7 @@ const MONTH_NAMES = [
                         <input type="number" step="0.01"
                                [ngModel]="getIncomeForMember(m, mem)"
                                (ngModelChange)="onIncomeChange(m, mem, $event)"
-                               class="w-full text-right bg-transparent font-bold font-mono px-1.5 py-1 rounded hover:bg-slate-950 focus:bg-slate-950 focus:outline-none border border-transparent text-xs"
+                               class="w-full text-right bg-transparent font-bold font-mono tabular-nums px-1.5 py-1 rounded hover:bg-slate-950 focus:bg-slate-950 focus:outline-none border border-transparent text-xs"
                                [ngClass]="getMemberTextColor(mem)" />
                       </td>
                     }
@@ -1049,11 +1107,17 @@ const MONTH_NAMES = [
 
               @if (activeProfile === 'CONSOLIDADO') {
                 <tr class="bg-slate-950/40 text-[11px] border-t border-slate-800/40 hover:bg-slate-900/30">
-                  <td class="p-1.5 border-r border-slate-800 text-center text-indigo-400 font-mono">+</td>
+                  <td class="p-1.5 border-r border-slate-800 text-center text-fintech-400 font-mono">+</td>
                   <td class="p-1.5 border-r border-slate-800 text-center font-mono"></td>
                   <td class="p-1.5 border-r border-slate-800">
-                    <button (click)="openMemberManagerModal()" class="text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-1.5 cursor-pointer">
-                      <span>+ Adicionar ou Gerenciar Membros da Família</span>
+                    <button (click)="openMemberManagerModal()" class="text-fintech-400 hover:text-fintech-300 font-medium flex items-center gap-1.5 cursor-pointer">
+                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                      </svg>
+                      <span>Gerenciar Membros da Família</span>
                     </button>
                   </td>
                   <td [attr.colspan]="displayedMonths.length + 1"></td>
@@ -1062,15 +1126,17 @@ const MONTH_NAMES = [
 
               @if (activeProfile === 'CONSOLIDADO') {
                 <tr class="bg-slate-900/95 border-t border-slate-800 font-bold text-xs">
-                  <td class="p-2 border-r border-slate-800 text-center text-teal-400 font-mono">↓</td>
-                  <td class="p-2 border-r border-slate-800 text-center font-mono text-[10px] text-teal-400 uppercase">
+                  <td class="p-2 border-r border-slate-800 text-center text-fintech-400 font-mono text-[10px]">
+                    ENTRADAS
+                  </td>
+                  <td class="p-2 border-r border-slate-800 text-center font-mono text-[10px] text-fintech-400 uppercase">
                     TOTAL
                   </td>
-                  <td class="p-2 border-r border-slate-800 text-teal-300 font-sans uppercase">
+                  <td class="p-2 border-r border-slate-800 text-fintech-300 font-sans uppercase">
                     Total de Rendimentos ({{ getMembersSummaryLabel() }})
                   </td>
                   @for (m of displayedMonths; track m.id) {
-                    <td class="p-2 border-r border-slate-800 text-right font-mono text-teal-300 font-extrabold text-xs bg-teal-950/30">
+                    <td class="p-2 border-r border-slate-800 text-right font-mono tabular-nums text-fintech-300 font-bold text-xs bg-fintech-950/30">
                       R$ {{ getProfileIncome(m) | number:'1.2-2' }}
                     </td>
                   }
@@ -1084,9 +1150,17 @@ const MONTH_NAMES = [
               @for (mem of members; track mem.id) {
                 @if (activeProfile === 'CONSOLIDADO' || activeProfile === mem.id) {
                   <tr class="bg-slate-900/60 border-t border-slate-800 text-xs">
-                    <td class="p-2 border-r border-slate-800 text-center text-amber-400 font-mono">🏦</td>
+                    <td class="p-2 border-r border-slate-800 text-center font-mono">
+                      <svg class="w-3.5 h-3.5 text-amber-400/80 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="21" x2="21" y2="21"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                        <polyline points="5 6 12 3 19 6"></polyline>
+                        <line x1="4" y1="10" x2="4" y2="21"></line>
+                        <line x1="20" y1="10" x2="20" y2="21"></line>
+                      </svg>
+                    </td>
                     <td class="p-2 border-r border-slate-800 text-center">
-                      <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase">
+                      <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/20 uppercase">
                         GIRO {{ mem.name }}
                       </span>
                     </td>
@@ -1094,7 +1168,7 @@ const MONTH_NAMES = [
                       <span class="text-amber-300 font-medium">Capital de Giro {{ mem.name }}</span>
                     </td>
                     @for (m of displayedMonths; track m.id) {
-                      <td class="p-2 border-r border-slate-800 text-right bg-amber-950/10 font-mono text-xs font-bold text-amber-300">
+                      <td class="p-2 border-r border-slate-800 text-right bg-amber-950/10 font-mono tabular-nums text-xs font-semibold text-amber-300">
                         R$ {{ getFinalCapitalGiroForMember(m, mem) | number:'1.2-2' }}
                       </td>
                     }
@@ -1105,15 +1179,23 @@ const MONTH_NAMES = [
 
               @if (activeProfile === 'CONSOLIDADO') {
                 <tr class="bg-slate-900/70 border-t border-slate-800 font-bold text-xs">
-                  <td class="p-2 border-r border-slate-800 text-center text-amber-400 font-mono">🏦</td>
+                  <td class="p-2 border-r border-slate-800 text-center font-mono">
+                    <svg class="w-3.5 h-3.5 text-amber-400/80 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="3" y1="21" x2="21" y2="21"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                      <polyline points="5 6 12 3 19 6"></polyline>
+                      <line x1="4" y1="10" x2="4" y2="21"></line>
+                      <line x1="20" y1="10" x2="20" y2="21"></line>
+                    </svg>
+                  </td>
                   <td class="p-2 border-r border-slate-800 text-center font-mono text-[10px] text-amber-400 uppercase">
-                    GIRO FAMÍLIA
+                    GIRO TOTAL
                   </td>
                   <td class="p-2 border-r border-slate-800 text-amber-300 font-sans uppercase">
                     Total Capital de Giro (Família)
                   </td>
                   @for (m of displayedMonths; track m.id) {
-                    <td class="p-2 border-r border-slate-800 text-right font-mono text-amber-300 font-black text-xs bg-amber-950/20">
+                    <td class="p-2 border-r border-slate-800 text-right font-mono tabular-nums text-amber-300 font-bold text-xs bg-amber-950/20">
                       R$ {{ getProfileFinalCapitalGiro(m) | number:'1.2-2' }}
                     </td>
                   }
@@ -1125,7 +1207,13 @@ const MONTH_NAMES = [
               <!-- 4. SEÇÃO DE RESULTADO DO MÊS (LÍQUIDO: RENDIMENTOS - GASTOS) -->
               <!-- ========================================================= -->
               <tr class="bg-slate-900/80 border-t border-slate-800 font-bold">
-                <td class="p-2.5 border-r border-slate-800 text-center font-mono">📊</td>
+                <td class="p-2.5 border-r border-slate-800 text-center font-mono">
+                  <svg class="w-3.5 h-3.5 text-slate-400 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                  </svg>
+                </td>
                 <td class="p-2.5 border-r border-slate-800 text-center font-mono text-[10px] text-slate-400 uppercase">
                   {{ activeProfile === 'CONSOLIDADO' ? 'LÍQUIDO' : getActiveProfileName() }}
                 </td>
@@ -1133,8 +1221,8 @@ const MONTH_NAMES = [
                   Resultado do Mês ({{ activeProfile === 'CONSOLIDADO' ? 'Consolidado' : getActiveProfileName() }})
                 </td>
                 @for (m of displayedMonths; track m.id) {
-                  <td class="p-2.5 border-r border-slate-800 text-right font-mono text-xs font-black"
-                      [ngClass]="getProfileResultado(m) >= 0 ? 'text-emerald-400' : 'text-rose-400'">
+                  <td class="p-2.5 border-r border-slate-800 text-right font-mono tabular-nums text-xs font-bold"
+                      [ngClass]="getProfileResultado(m) >= 0 ? 'text-fintech-400' : 'text-rose-400'">
                     {{ getProfileResultado(m) >= 0 ? '+' : '' }}R$ {{ getProfileResultado(m) | number:'1.2-2' }}
                   </td>
                 }
@@ -1147,7 +1235,11 @@ const MONTH_NAMES = [
               @for (mem of members; track mem.id) {
                 @if (activeProfile === 'CONSOLIDADO' || activeProfile === mem.id) {
                   <tr class="border-t text-xs" [ngClass]="getMemberResBgClass(mem)">
-                    <td class="p-2 border-r border-slate-800 text-center font-mono">🛡️</td>
+                    <td class="p-2 border-r border-slate-800 text-center font-mono">
+                      <svg class="w-3.5 h-3.5 text-cyan-400/80 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                      </svg>
+                    </td>
                     <td class="p-2 border-r border-slate-800 text-center font-mono text-[10px] uppercase font-bold" [ngClass]="getMemberTextColor(mem)">
                       RES. {{ mem.name }}
                     </td>
@@ -1161,19 +1253,21 @@ const MONTH_NAMES = [
                                  [ngModel]="getFinalCashForMember(selectedYear, m.monthIndex, mem)"
                                  (ngModelChange)="onFinalCashForMemberChange(selectedYear, m.monthIndex, mem, $event)"
                                  [title]="'Caixa Final ' + mem.name + ' (Ajuste afeta automaticamente os próximos meses)'"
-                                 class="w-full text-right bg-transparent font-black font-mono px-1 py-0.5 rounded hover:bg-slate-950 focus:bg-slate-950 focus:outline-none border border-transparent text-xs"
+                                 class="w-full text-right bg-transparent font-bold font-mono tabular-nums px-1 py-0.5 rounded hover:bg-slate-950 focus:bg-slate-950 focus:outline-none border border-transparent text-xs"
                                  [ngClass]="getMemberTextColor(mem)" />
                           @if (getSurplusTransferToReserveForMember(m, mem) > 0) {
-                            <div class="text-[9px] text-emerald-400 font-sans font-normal pr-1" title="Excedente de Giro transferido para a Reserva de Emergência">
+                            <div class="text-[9px] text-fintech-400 font-mono tabular-nums pr-1" title="Excedente de Giro transferido para a Reserva de Emergência">
                               +R$ {{ getSurplusTransferToReserveForMember(m, mem) | number:'1.2-2' }} do giro
                             </div>
                           } @else if (getResultadoForMember(m, mem) < 0 && getDeficitCoveredByReserveForMember(m, mem) === 0) {
-                            <div class="text-[9px] text-emerald-400 font-sans font-normal pr-1" title="Déficit 100% absorvido pelo Capital de Giro. Reserva intacta!">
-                              🛡️ Reserva Intacta
+                            <div class="text-[9px] text-fintech-400 font-sans font-normal pr-1 flex items-center gap-1" title="Déficit 100% absorvido pelo Capital de Giro. Reserva intacta!">
+                              <svg class="w-2.5 h-2.5 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                              <span>Reserva intacta</span>
                             </div>
                           } @else if (getResultadoForMember(m, mem) < 0 && getDeficitCoveredByReserveForMember(m, mem) > 0) {
-                            <div class="text-[9px] text-rose-400 font-sans font-normal pr-1" title="Giro esgotado: débito na reserva">
-                              ⚠️ -R$ {{ getDeficitCoveredByReserveForMember(m, mem) | number:'1.2-2' }} da reserva
+                            <div class="text-[9px] text-rose-400 font-mono tabular-nums pr-1 flex items-center gap-1" title="Giro esgotado: débito na reserva">
+                              <svg class="w-2.5 h-2.5 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                              <span>-R$ {{ getDeficitCoveredByReserveForMember(m, mem) | number:'1.2-2' }} da reserva</span>
                             </div>
                           }
                         </div>
@@ -1186,8 +1280,14 @@ const MONTH_NAMES = [
 
               <!-- Row: Caixa Final Unificado (Reserva Familiar Total) -->
               @if (activeProfile === 'CONSOLIDADO') {
-                <tr class="bg-cyan-950/50 border-t-2 border-cyan-500/40 font-black text-sm">
-                  <td class="p-3 border-r border-slate-800 text-center text-cyan-400 font-mono">👑</td>
+                <tr class="bg-cyan-950/40 border-t-2 border-cyan-500/40 font-bold text-sm">
+                  <td class="p-3 border-r border-slate-800 text-center font-mono">
+                    <svg class="w-3.5 h-3.5 text-cyan-400 inline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                      <polyline points="2 17 12 22 22 17"></polyline>
+                      <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                  </td>
                   <td class="p-3 border-r border-slate-800 text-center font-mono text-[10px] text-cyan-300">
                     RES. FAMÍLIA
                   </td>
@@ -1195,7 +1295,7 @@ const MONTH_NAMES = [
                     Caixa Final Unificado (Reserva Familiar = {{ getMembersSummaryLabel() }})
                   </td>
                   @for (m of displayedMonths; track m.id) {
-                    <td class="p-3 border-r border-slate-800 text-right font-mono text-cyan-300 text-xs bg-cyan-950/60 font-black">
+                    <td class="p-3 border-r border-slate-800 text-right font-mono tabular-nums text-cyan-300 text-xs bg-cyan-950/60 font-bold">
                       R$ {{ getFinalCashUnified(selectedYear, m.monthIndex) | number:'1.2-2' }}
                     </td>
                   }
@@ -1208,9 +1308,9 @@ const MONTH_NAMES = [
         </div>
 
         @if (lastSyncMessage) {
-          <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-400 font-mono flex items-center justify-between">
-            <span>✓ {{ lastSyncMessage }}</span>
-            <span class="text-[10px] text-slate-400">CQRS & Event Sourcing</span>
+          <div class="p-3 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-300 font-mono flex items-center justify-between">
+            <span class="text-fintech-400">✓ {{ lastSyncMessage }}</span>
+            <span class="text-[10px] text-slate-500">CQRS & Event Sourcing</span>
           </div>
         }
 
@@ -1218,37 +1318,63 @@ const MONTH_NAMES = [
 
       <!-- AI Advisor Sidecar Drawer -->
       @if (showAiDrawer) {
-        <div class="glass-panel rounded-2xl p-5 border border-slate-800 space-y-4 animate-in fade-in duration-200">
+        <div class="bg-[#0c1322] rounded-xl p-5 border border-slate-800 space-y-4">
           
           <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-            <div class="flex items-center gap-2">
-              <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-teal-500 to-cyan-400 flex items-center justify-center text-slate-950 font-bold text-sm">
-                AI
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700/60 flex items-center justify-center text-fintech-400">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                  <rect x="9" y="9" width="6" height="6"></rect>
+                  <line x1="9" y1="1" x2="9" y2="4"></line>
+                  <line x1="15" y1="1" x2="15" y2="4"></line>
+                  <line x1="9" y1="20" x2="9" y2="23"></line>
+                  <line x1="15" y1="20" x2="15" y2="23"></line>
+                  <line x1="20" y1="9" x2="23" y2="9"></line>
+                  <line x1="20" y1="14" x2="23" y2="14"></line>
+                  <line x1="1" y1="9" x2="4" y2="9"></line>
+                  <line x1="1" y1="14" x2="4" y2="14"></line>
+                </svg>
               </div>
               <div>
-                <h3 class="text-sm font-bold text-white">Assistente Financeiro IA Multi-Horizonte (RAG)</h3>
-                <p class="text-[11px] text-slate-400">Análise de Catálogo, Capital de Giro Residual e Reservas no PostgreSQL</p>
+                <h3 class="text-sm font-semibold text-white">Consultor de Inteligência Financeira</h3>
+                <p class="text-[11px] text-slate-400">Análise contextual de despesas, capital de giro e reservas</p>
               </div>
             </div>
 
-            <button (click)="toggleAiDrawer()" class="text-slate-400 hover:text-white text-xs px-2 py-1 rounded bg-slate-900 border border-slate-800">
-              ✕ Fechar
+            <button (click)="toggleAiDrawer()" class="text-slate-400 hover:text-white text-xs px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 transition cursor-pointer flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+              <span>Fechar</span>
             </button>
           </div>
 
           <!-- Quick Multi-Period Prompts -->
           <div class="flex flex-wrap gap-2 text-xs">
             <button (click)="askAi('Como os déficits mensais foram absorvidos pelo Capital de Giro para proteger a Reserva?')"
-                    class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-[11px] transition">
-              🛡️ <span>Absorção de Déficit pelo Giro</span>
+                    class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-850 text-slate-300 hover:text-white border border-slate-800 text-[11px] transition flex items-center gap-1.5 cursor-pointer">
+              <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              <span>Absorção de Déficit pelo Giro</span>
             </button>
             <button (click)="askAi('Qual a evolução das reservas de emergência individuais e unificadas de todos os membros da família?')"
-                    class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-[11px] transition">
-              💵 <span>Evolução das Reservas</span>
+                    class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-850 text-slate-300 hover:text-white border border-slate-800 text-[11px] transition flex items-center gap-1.5 cursor-pointer">
+              <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+              <span>Evolução das Reservas</span>
             </button>
             <button (click)="askAi('Quais são as despesas cadastradas no catálogo com seus valores padrão?')"
-                    class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 text-[11px] transition">
-              📑 <span>Consultar Catálogo de Despesas</span>
+                    class="px-2.5 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-850 text-slate-300 hover:text-white border border-slate-800 text-[11px] transition flex items-center gap-1.5 cursor-pointer">
+              <svg class="w-3 h-3 text-slate-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+              </svg>
+              <span>Consultar Catálogo de Despesas</span>
             </button>
           </div>
 
@@ -1257,19 +1383,19 @@ const MONTH_NAMES = [
             @for (msg of aiMessages; track msg.id) {
               <div class="space-y-1" [class.text-right]="msg.sender === 'user'">
                 <div class="text-[10px] font-mono text-slate-500">
-                  {{ msg.sender === 'user' ? 'VOCÊ' : 'ASSISTENTE IA' }} • {{ msg.timestamp | date:'HH:mm:ss' }}
+                  {{ msg.sender === 'user' ? 'VOCÊ' : 'CONSULTOR' }} • {{ msg.timestamp | date:'HH:mm:ss' }}
                 </div>
                 <div class="p-3 rounded-xl text-xs leading-relaxed inline-block max-w-2xl text-left"
-                     [ngClass]="msg.sender === 'user' ? 'bg-emerald-600 text-white' : 'bg-slate-900 text-slate-200 border border-slate-800 whitespace-pre-line'">
+                     [ngClass]="msg.sender === 'user' ? 'bg-slate-800 text-slate-100 border border-slate-700/60' : 'bg-slate-900 text-slate-200 border border-slate-800 whitespace-pre-line'">
                   {{ msg.content }}
                 </div>
               </div>
             }
 
             @if (aiThinking) {
-              <div class="text-xs text-teal-400 font-mono flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-teal-400 animate-ping"></span>
-                <span>Consultando banco de dados e gerando análise...</span>
+              <div class="text-xs text-slate-400 font-mono flex items-center gap-2">
+                <span class="w-1.5 h-1.5 rounded-full bg-fintech-400 animate-pulse"></span>
+                <span>Processando análise com base nos registros financeiros...</span>
               </div>
             }
           </div>
@@ -1278,9 +1404,9 @@ const MONTH_NAMES = [
           <div class="flex items-center gap-2">
             <input type="text" [(ngModel)]="aiQuery" (keyup.enter)="sendAiQuery()"
                    placeholder="Pergunte sobre seus meses, rendimentos, reservas ou divisão de gastos..."
-                   class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-teal-400 font-sans" />
+                   class="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-slate-600 font-sans" />
             <button (click)="sendAiQuery()" [disabled]="aiThinking || !aiQuery.trim()"
-                    class="px-4 py-2 bg-gradient-to-r from-teal-500 to-cyan-400 hover:from-teal-400 hover:to-cyan-400 disabled:opacity-50 text-slate-950 text-xs font-bold rounded-xl transition">
+                    class="px-4 py-2 bg-fintech-600 hover:bg-fintech-500 disabled:opacity-50 text-white text-xs font-semibold rounded-xl transition cursor-pointer">
               Perguntar
             </button>
           </div>
@@ -1640,15 +1766,15 @@ export class SpreadsheetComponent implements OnInit {
   }
 
   getOwnerLabel(owner: ExpenseOwner): string {
-    if (owner === 'Compartilhado') return '🏠 Compartilhado';
+    if (owner === 'Compartilhado') return 'Compartilhado';
     const mem = this.members.find(m => m.name === owner || m.id === owner);
-    return mem ? `${mem.icon} ${mem.name}` : owner;
+    return mem ? mem.name : owner;
   }
 
   getActiveProfileLabel(): string {
-    if (this.activeProfile === 'CONSOLIDADO') return '👥 Consolidado (Família)';
+    if (this.activeProfile === 'CONSOLIDADO') return 'Consolidado (Família)';
     const mem = this.members.find(m => m.id === this.activeProfile || m.name.toUpperCase() === this.activeProfile.toUpperCase());
-    return mem ? `${mem.icon} ${mem.name}` : this.activeProfile;
+    return mem ? mem.name : this.activeProfile;
   }
 
   getActiveProfileName(): string {
@@ -1933,11 +2059,11 @@ export class SpreadsheetComponent implements OnInit {
 
   getTimeHorizonLabel(horizon: TimeHorizon): string {
     switch (horizon) {
-      case 'MENSAL': return '📅 Mês (1 Mês)';
-      case 'BIMESTRAL': return '🌓 Bimestral (2 Meses)';
-      case 'TRIMESTRAL': return '📊 Trimestral (3 Meses)';
-      case 'SEMESTRAL': return '📈 Semestral (6 Meses)';
-      case 'ANUAL': return '🗓️ Ano Completo (12 Meses)';
+      case 'MENSAL': return 'Mensal';
+      case 'BIMESTRAL': return 'Bimestral';
+      case 'TRIMESTRAL': return 'Trimestral';
+      case 'SEMESTRAL': return 'Semestral';
+      case 'ANUAL': return 'Anual';
     }
   }
 

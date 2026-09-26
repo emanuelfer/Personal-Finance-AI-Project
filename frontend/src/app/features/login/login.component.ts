@@ -9,34 +9,34 @@ import { AuthService } from '../../core/services/auth.service';
   imports: [CommonModule],
   template: `
     <div class="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div class="max-w-md w-full space-y-8 bg-slate-900/90 border border-slate-800 p-8 rounded-2xl shadow-2xl backdrop-blur relative overflow-hidden">
+      <div class="max-w-md w-full space-y-7 bg-[#0c1322] border border-slate-800 p-8 rounded-xl relative shadow-none">
         
-        <!-- Subtle Glow Effect -->
-        <div class="absolute -top-24 -right-24 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div class="absolute -bottom-24 -left-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
         <!-- Header -->
         <div class="text-center space-y-3 relative z-10">
-          <div class="mx-auto w-16 h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-emerald-500 flex items-center justify-center shadow-xl shadow-indigo-500/20 text-white font-black text-2xl tracking-tighter">
-            PF
+          <div class="mx-auto w-12 h-12 rounded-xl bg-slate-900 border border-slate-700/80 flex items-center justify-center text-emerald-400 font-bold text-lg">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
           </div>
-          <h2 class="text-2xl font-extrabold text-white tracking-tight">
-            Personal Finance & AI Advisory
+          <h2 class="text-xl font-bold text-slate-100 tracking-tight">
+            Personal Finance Platform
           </h2>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs font-mono font-medium">
-            <span>🔒 Zero-Trust Perimeter • Keycloak OIDC</span>
+          <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-slate-900 border border-slate-800 text-slate-400 text-xs font-mono font-medium">
+            <span>Zero-Trust Perimeter &bull; Keycloak OIDC</span>
           </div>
           <p class="text-xs text-slate-400 max-w-xs mx-auto">
-            Autenticação corporativa segura via OAuth 2.0 & OpenID Connect com PKCE.
+            Acesso corporativo seguro via OAuth 2.0 &amp; OpenID Connect com PKCE.
           </p>
         </div>
 
         <!-- Main Action: PKCE Keycloak Login -->
-        <div class="space-y-4 relative z-10 pt-2">
+        <div class="space-y-4 relative z-10 pt-1">
           <button (click)="loginWithKeycloak()"
                   [disabled]="loading"
-                  class="w-full flex items-center justify-center gap-3 py-3.5 px-4 rounded-xl text-white font-bold text-sm bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-600 hover:from-indigo-500 hover:via-purple-500 hover:to-emerald-500 shadow-lg shadow-indigo-600/30 transition transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer disabled:opacity-50">
-            <span class="text-lg">🔑</span>
+                  class="w-full flex items-center justify-center gap-2.5 py-3 px-4 rounded-lg text-white font-medium text-xs bg-emerald-700 hover:bg-emerald-600 border border-emerald-600/40 transition cursor-pointer disabled:opacity-50">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+            </svg>
             <span>Entrar com Keycloak (OIDC PKCE)</span>
           </button>
         </div>
@@ -44,20 +44,28 @@ import { AuthService } from '../../core/services/auth.service';
         <!-- Security Features Info -->
         <div class="border-t border-slate-800/80 pt-4 text-left space-y-2 text-[11px] text-slate-400 font-mono relative z-10">
           <div class="flex items-center gap-2">
-            <span class="text-emerald-400">✔</span>
+            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
             <span>PKCE Authorization Code Flow (RFC 7636)</span>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-emerald-400">✔</span>
+            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
             <span>Stateless JWKS Cryptographic Signature Check</span>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-emerald-400">✔</span>
+            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
             <span>Strict Role-Based Access Control (RBAC)</span>
           </div>
           <div class="flex items-center gap-2">
-            <span class="text-emerald-400">✔</span>
-            <span>Nenhuma senha trafega ou é armazenada no Frontend</span>
+            <svg class="w-3.5 h-3.5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Credenciais e tokens protegidos e isolados</span>
           </div>
         </div>
 
