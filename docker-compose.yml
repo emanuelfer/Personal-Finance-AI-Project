@@ -247,7 +247,7 @@ services:
   # Angular Frontend (Single Page Application via Nginx)
   # ==========================================
   frontend:
-    image: ghcr.io/emanuelfer/pf-backend:latest
+    image: ghcr.io/emanuelfer/pf-frontend:latest
     container_name: pf-frontend
     restart: unless-stopped
     depends_on:
