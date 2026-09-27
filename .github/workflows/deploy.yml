@@ -45,6 +45,7 @@ jobs:
       - name: Pull and Deploy
         run: |
           echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
+          echo "HOST_BIND_IP=0.0.0.0" >> .env
           docker compose pull
           docker compose up -d
           docker image prune -f
